@@ -18,8 +18,10 @@ public class App {
 
 		Extractable e = new ItemExtractor();
 
-		e.init(t, "Item.wz");
+		e.init(t, "Item");
 
 		e.extract();
+
+		System.out.println("Dumped successfully");
 	}
 }

@@ -1,12 +1,5 @@
 package chryse.unit;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.function.Consumer;
-
-import javax.imageio.ImageIO;
-
 import chryse.Extractable;
 import chryse.Target;
 import wz.WzImage;
@@ -31,10 +24,10 @@ public class ItemExtractor extends Extractable {
 
 		WzObject<?, ?> root = wzFile.getRoot();
 
-		iterateInternal(root, ItemExtractor::exportImage);
+		iterateInternal(root);
 	}
 
-	private void iterateInternal(WzObject<?, ?> root, Consumer<WzObject<?, ?>> export) {
+	private void iterateInternal(WzObject<?, ?> root) {
 		if (root.getChildren() == null) {
 			return;
 		}
@@ -45,44 +38,26 @@ public class ItemExtractor extends Extractable {
 				Object value = prop.getValue();
 
 				if (value instanceof PNG) {
-					export.accept(prop);
+					String path = prop.getFullPath();
+
+					if (!path.contains("icon")) {
+						continue;
+					}
+
+					if (path.contains("Raw")) {
+						continue;
+					}
+
+					exportImage(prop);
 				}
 			}
 
-			iterateInternal(child, export);
+			iterateInternal(child);
 
 			if (child instanceof WzImage) {
 				((WzImage) child).unparse();
 			}
 		}
-	}
-
-	private static void exportImage(WzObject<?, ?> export) {
-		String path = export.getFullPath();
-
-		// System.out.println(path);
-
-		WzProperty<?> prop = (WzProperty<?>) export;
-		PNG value = (PNG) prop.getValue();
-
-		Image img = value.getImage(false);
-
-		try {
-			File f = new File("dump/" + path + ".png");
-			if (f.exists()) {
-				f.delete();
-			} else {
-				f.mkdirs();
-				f.createNewFile();
-			}
-
-			ImageIO.write((BufferedImage) img, "png", f);
-		} catch (Exception e) {
-			e.printStackTrace();
-			// XXX swallow? ;)
-		}
-
-		img.flush();
 	}
 
 }
