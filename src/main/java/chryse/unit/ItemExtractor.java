@@ -1,7 +1,7 @@
 /*
  	This file is part of Lachelein: MapleStory Web Database
  	Copyright (C) 2017  Alan Morel <alan.morel@nyu.edu>
-    Copyright (C) 2017  Brenterino <therealspookster@gmail.com>
+	Copyright (C) 2017  Brenterino <therealspookster@gmail.com>
 
 	Permission is hereby granted, free of charge, to any person obtaining
 	a copy of this software and associated documentation files (the
@@ -24,6 +24,8 @@
 */
 
 package chryse.unit;
+
+import java.awt.Image;
 
 import chryse.Extractable;
 import chryse.Target;
@@ -92,13 +94,18 @@ public class ItemExtractor extends Extractable {
 
 					System.out.println(in + " has ID of " + id);
 
-					if (id == 0) {
+					PNG value = (PNG) obj.getValue();
+					Image img = value.getImage(false);
+
+					if (img.getWidth(null) <= 4 || img.getHeight(null) <= 4) {
 						continue;
 					}
 
+					System.out.println(in + " has ID of " + id);
+
 					String out = getOutPath(in);
 
-					exportImage(out, obj);
+					exportImage(out, img);
 				}
 			}
 

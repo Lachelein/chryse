@@ -1,7 +1,7 @@
 /*
  	This file is part of Lachelein: MapleStory Web Database
  	Copyright (C) 2017  Alan Morel <alan.morel@nyu.edu>
-    Copyright (C) 2017  Brenterino <therealspookster@gmail.com>
+	Copyright (C) 2017  Brenterino <therealspookster@gmail.com>
 
 	Permission is hereby granted, free of charge, to any person obtaining
 	a copy of this software and associated documentation files (the
@@ -25,6 +25,7 @@
 
 package chryse;
 
+import chryse.unit.NpcExtractor;
 import wz.common.WzTool;
 import wz.common.WzVersion;
 
@@ -41,9 +42,9 @@ public class App {
 		// itemExtractor.setFullDump(true);
 		// itemExtractor.extract();
 
-		// Extractable npcExtractor = new NpcExtractor(target);
+		Extractable npcExtractor = new NpcExtractor(target);
 		// npcExtractor.setFullDump(true);
-		// npcExtractor.extract();
+		npcExtractor.extract();
 
 		System.out.println("All files extracted successfully.");
 	}

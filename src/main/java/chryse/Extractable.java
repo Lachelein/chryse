@@ -33,9 +33,6 @@ import java.nio.file.Paths;
 import javax.imageio.ImageIO;
 
 import wz.WzFile;
-import wz.WzObject;
-import wz.WzProperty;
-import wz.common.PNG;
 import wz.io.WzMappedInputStream;
 
 public abstract class Extractable {
@@ -59,12 +56,7 @@ public abstract class Extractable {
 		this.fullDump = d;
 	}
 
-	protected void exportImage(String out, WzObject<?, ?> export) {
-
-		WzProperty<?> prop = (WzProperty<?>) export;
-		PNG value = (PNG) prop.getValue();
-
-		Image img = value.getImage(false);
+	protected void exportImage(String out, Image img) {
 
 		try {
 
