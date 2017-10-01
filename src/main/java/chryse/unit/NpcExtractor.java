@@ -33,10 +33,10 @@ import wz.WzObject;
 import wz.WzProperty;
 import wz.common.PNG;
 
-public class ItemExtractor extends Extractable {
+public class NpcExtractor extends Extractable {
 
-	public ItemExtractor(Target target) {
-		super(target, "Item");
+	public NpcExtractor(Target target) {
+		super(target, "Npc");
 	}
 
 	@Override
@@ -46,12 +46,12 @@ public class ItemExtractor extends Extractable {
 
 		for (String s : split) {
 
-			if (s.contains("info") || s.contains("icon")) {
-				break;
-			}
+			// if (s.contains("info") || s.contains("icon")) {
+			// break;
+			// }
 
 			if (s.contains(".img")) {
-				s = s.substring(0, s.length() - 4);
+				// s = s.substring(0, s.length() - 4);
 			}
 
 			if (Utility.isNumeric(s)) {
@@ -81,11 +81,11 @@ public class ItemExtractor extends Extractable {
 					String in = obj.getFullPath();
 
 					if (!in.contains("icon")) {
-						continue;
+						// continue;
 					}
 
 					if (in.contains("Raw")) {
-						continue;
+						// continue;
 					}
 
 					int id = getId(in);

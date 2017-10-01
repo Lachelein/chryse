@@ -25,7 +25,6 @@
 
 package chryse;
 
-import chryse.unit.ItemExtractor;
 import wz.common.WzTool;
 import wz.common.WzVersion;
 
@@ -38,8 +37,13 @@ public class App {
 		target.VERSION = 83;
 		target.KEY = WzTool.generateKey(target.LOCALE);
 
-		Extractable itemExtractor = new ItemExtractor(target, "Item");
-		itemExtractor.extract();
+		// Extractable itemExtractor = new ItemExtractor(target);
+		// itemExtractor.setFullDump(true);
+		// itemExtractor.extract();
+
+		// Extractable npcExtractor = new NpcExtractor(target);
+		// npcExtractor.setFullDump(true);
+		// npcExtractor.extract();
 
 		System.out.println("All files extracted successfully.");
 	}

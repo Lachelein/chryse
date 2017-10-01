@@ -42,9 +42,11 @@ public abstract class Extractable {
 
 	protected WzFile wzFile;
 	protected String wz;
+	protected boolean fullDump;
 
 	public Extractable(Target target, String wz) {
 		this.wz = wz;
+		this.fullDump = false;
 
 		WzMappedInputStream stream = new WzMappedInputStream(Paths.get("wz/" + wz + ".wz"));
 		stream.setKey(target.KEY);
@@ -53,14 +55,11 @@ public abstract class Extractable {
 		wzFile.parse(stream);
 	}
 
-	protected void exportImage(String path, WzObject<?, ?> export) {
-		int id = getId(path);
+	protected void setFullDump(boolean d) {
+		this.fullDump = d;
+	}
 
-		System.out.println(path + " has ID of " + id);
-
-		if (id == 0) {
-			return;
-		}
+	protected void exportImage(String out, WzObject<?, ?> export) {
 
 		WzProperty<?> prop = (WzProperty<?>) export;
 		PNG value = (PNG) prop.getValue();
@@ -68,7 +67,8 @@ public abstract class Extractable {
 		Image img = value.getImage(false);
 
 		try {
-			File file = new File("dump/" + wz + "/" + id + ".png");
+
+			File file = new File("dump/" + wz + "/" + out + ".png");
 
 			if (file.exists()) {
 				file.delete();
@@ -90,8 +90,18 @@ public abstract class Extractable {
 		subExtract();
 	}
 
+	protected String getOutPath(String in) {
+		if (fullDump) {
+			return in;
+		} else {
+			return getSubOutPath(in);
+		}
+	}
+
 	public abstract void subExtract();
 
 	public abstract int getId(String path);
+
+	public abstract String getSubOutPath(String in);
 
 }
