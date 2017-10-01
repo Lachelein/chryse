@@ -25,12 +25,9 @@
 
 package chryse;
 
-import wz.common.WzVersion;
+public class Utility {
 
-public class Target {
-
-	public byte[] KEY;
-	public short VERSION;
-	public WzVersion LOCALE;
-
+	public static boolean isNumeric(String string) {
+		return string != null && string.matches("[-+]?\\d*\\.?\\d+");
+	}
 }
