@@ -1,6 +1,6 @@
 /*
  	This file is part of Lachelein: MapleStory Web Database
- 	Copyright (C) 2017  Alan Morel <alan.morel@nyu.edu>
+	Copyright (C) 2017  Alan Morel <alan.morel@nyu.edu>
     Copyright (C) 2017  Brenterino <therealspookster@gmail.com>
 
 	Permission is hereby granted, free of charge, to any person obtaining
@@ -35,25 +35,21 @@ import javax.imageio.ImageIO;
 import wz.WzFile;
 import wz.io.WzMappedInputStream;
 
-public abstract class Extractable {
+public abstract class Extractor {
 
 	protected WzFile wzFile;
 	protected String wz;
 	protected boolean fullDump;
 
-	public Extractable(Target target, String wz) {
+	public Extractor(Target target, boolean fullDump, String wz) {
 		this.wz = wz;
-		this.fullDump = false;
+		this.fullDump = fullDump;
 
 		WzMappedInputStream stream = new WzMappedInputStream(Paths.get("wz/" + wz + ".wz"));
 		stream.setKey(target.KEY);
 
 		wzFile = new WzFile("wz/" + wz + ".wz", target.VERSION);
 		wzFile.parse(stream);
-	}
-
-	protected void setFullDump(boolean d) {
-		this.fullDump = d;
 	}
 
 	protected void exportImage(String out, Image img) {

@@ -36,12 +36,12 @@ import wz.WzObject;
 import wz.WzProperty;
 import wz.common.PNG;
 
-public class NpcExtractor extends Extractor {
+public class MapExtractor extends Extractor {
 
 	Set<Integer> dumped = new HashSet<Integer>();
 
-	public NpcExtractor(Target target, boolean fullDump) {
-		super(target, fullDump, "Npc");
+	public MapExtractor(Target target, boolean fullDump) {
+		super(target, fullDump, "Map");
 	}
 
 	@Override
@@ -78,6 +78,10 @@ public class NpcExtractor extends Extractor {
 
 				if (obj.getValue() instanceof PNG) {
 					String in = obj.getFullPath();
+
+					if (!in.contains("miniMap")) {
+						continue;
+					}
 
 					int id = getId(in);
 

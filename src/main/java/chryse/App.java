@@ -1,6 +1,6 @@
 /*
  	This file is part of Lachelein: MapleStory Web Database
- 	Copyright (C) 2017  Alan Morel <alan.morel@nyu.edu>
+	Copyright (C) 2017  Alan Morel <alan.morel@nyu.edu>
 	Copyright (C) 2017  Brenterino <therealspookster@gmail.com>
 
 	Permission is hereby granted, free of charge, to any person obtaining
@@ -25,7 +25,7 @@
 
 package chryse;
 
-import chryse.unit.NpcExtractor;
+import chryse.unit.MapExtractor;
 import wz.common.WzTool;
 import wz.common.WzVersion;
 
@@ -38,13 +38,15 @@ public class App {
 		target.VERSION = 83;
 		target.KEY = WzTool.generateKey(target.LOCALE);
 
-		// Extractable itemExtractor = new ItemExtractor(target);
-		// itemExtractor.setFullDump(true);
-		// itemExtractor.extract();
+		Extractor[] extractors = {
+				// new ItemExtractor(target, false),
+				// new NpcExtractor(target, false),
+				new MapExtractor(target, false)
+		};
 
-		Extractable npcExtractor = new NpcExtractor(target);
-		// npcExtractor.setFullDump(true);
-		npcExtractor.extract();
+		for (Extractor extractor : extractors) {
+			extractor.extract();
+		}
 
 		System.out.println("All files extracted successfully.");
 	}

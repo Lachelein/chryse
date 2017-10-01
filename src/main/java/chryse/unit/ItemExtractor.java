@@ -1,6 +1,6 @@
 /*
  	This file is part of Lachelein: MapleStory Web Database
- 	Copyright (C) 2017  Alan Morel <alan.morel@nyu.edu>
+	Copyright (C) 2017  Alan Morel <alan.morel@nyu.edu>
 	Copyright (C) 2017  Brenterino <therealspookster@gmail.com>
 
 	Permission is hereby granted, free of charge, to any person obtaining
@@ -27,7 +27,7 @@ package chryse.unit;
 
 import java.awt.Image;
 
-import chryse.Extractable;
+import chryse.Extractor;
 import chryse.Target;
 import chryse.Utility;
 import wz.WzImage;
@@ -35,10 +35,10 @@ import wz.WzObject;
 import wz.WzProperty;
 import wz.common.PNG;
 
-public class ItemExtractor extends Extractable {
+public class ItemExtractor extends Extractor {
 
-	public ItemExtractor(Target target) {
-		super(target, "Item");
+	public ItemExtractor(Target target, boolean fullDump) {
+		super(target, fullDump, "Item");
 	}
 
 	@Override
