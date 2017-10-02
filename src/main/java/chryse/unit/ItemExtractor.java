@@ -30,8 +30,6 @@ import java.awt.Image;
 import chryse.Extractor;
 import chryse.Target;
 import chryse.Utility;
-import wz.WzImage;
-import wz.WzObject;
 import wz.WzProperty;
 import wz.common.PNG;
 
@@ -65,55 +63,36 @@ public class ItemExtractor extends Extractor {
 	}
 
 	@Override
-	public void subExtract() {
-		WzObject<?, ?> root = wzFile.getRoot();
-		iterateInternal(root);
-	}
+	public void subExtract(WzProperty<?> obj, String in) {
 
-	private void iterateInternal(WzObject<?, ?> root) {
-		if (root.getChildren() == null) {
-			return;
-		}
+		if (obj.getValue() instanceof PNG) {
 
-		for (WzObject<?, ?> child : root) {
-			if (child instanceof WzProperty<?>) {
-				WzProperty<?> obj = (WzProperty<?>) child;
-
-				if (obj.getValue() instanceof PNG) {
-					String in = obj.getFullPath();
-
-					if (!in.contains("icon")) {
-						continue;
-					}
-
-					if (in.contains("Raw")) {
-						continue;
-					}
-
-					int id = getId(in);
-
-					System.out.println(in + " has ID of " + id);
-
-					PNG value = (PNG) obj.getValue();
-					Image img = value.getImage(false);
-
-					if (img.getWidth(null) <= 4 || img.getHeight(null) <= 4) {
-						continue;
-					}
-
-					System.out.println(in + " has ID of " + id);
-
-					String out = getOutPath(in);
-
-					exportImage(out, img);
-				}
+			if (!in.contains("icon")) {
+				return;
 			}
 
-			iterateInternal(child);
-
-			if (child instanceof WzImage) {
-				((WzImage) child).unparse();
+			if (in.contains("Raw")) {
+				return;
 			}
+
+			int id = getId(in);
+
+			if (id == 0) {
+				return;
+			}
+
+			PNG value = (PNG) obj.getValue();
+			Image img = value.getImage(false);
+
+			if (img.getWidth(null) <= 4 || img.getHeight(null) <= 4) {
+				return;
+			}
+
+			System.out.println(in + " has ID of " + id);
+
+			String out = getOutPath(in);
+
+			exportImage(out, img);
 		}
 	}
 

@@ -25,22 +25,25 @@
 
 package chryse;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+import chryse.unit.ItemExtractor;
 import chryse.unit.MapExtractor;
-import wz.common.WzTool;
-import wz.common.WzVersion;
+import chryse.unit.NpcExtractor;
 
 public class App {
 
 	public static void main(String[] args) {
-		Target target = new Target();
+		Properties properties = loadProperties();
 
-		target.LOCALE = WzVersion.GMS;
-		target.VERSION = 83;
-		target.KEY = WzTool.generateKey(target.LOCALE);
+		Target target = new Target(properties);
 
 		Extractor[] extractors = {
-				// new ItemExtractor(target, false),
-				// new NpcExtractor(target, false),
+				new ItemExtractor(target, false),
+				new NpcExtractor(target, false),
 				new MapExtractor(target, false)
 		};
 
@@ -49,5 +52,25 @@ public class App {
 		}
 
 		System.out.println("All files extracted successfully.");
+	}
+
+	public static Properties loadProperties() {
+		Properties properties = new Properties();
+		InputStream input = null;
+		try {
+			input = new FileInputStream("config.properties");
+			properties.load(input);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return properties;
 	}
 }

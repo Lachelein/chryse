@@ -25,6 +25,9 @@
 
 package chryse;
 
+import java.util.Properties;
+
+import wz.common.WzTool;
 import wz.common.WzVersion;
 
 public class Target {
@@ -32,5 +35,11 @@ public class Target {
 	public byte[] KEY;
 	public short VERSION;
 	public WzVersion LOCALE;
+
+	public Target(Properties prop) {
+		this.LOCALE = WzVersion.valueOf(prop.getProperty("locale"));
+		this.VERSION = Short.parseShort(prop.getProperty("version"));
+		this.KEY = WzTool.generateKey(this.LOCALE);
+	}
 
 }

@@ -33,6 +33,9 @@ import java.nio.file.Paths;
 import javax.imageio.ImageIO;
 
 import wz.WzFile;
+import wz.WzImage;
+import wz.WzObject;
+import wz.WzProperty;
 import wz.io.WzMappedInputStream;
 
 public abstract class Extractor {
@@ -48,8 +51,8 @@ public abstract class Extractor {
 		WzMappedInputStream stream = new WzMappedInputStream(Paths.get("wz/" + wz + ".wz"));
 		stream.setKey(target.KEY);
 
-		wzFile = new WzFile("wz/" + wz + ".wz", target.VERSION);
-		wzFile.parse(stream);
+		this.wzFile = new WzFile("wz/" + wz + ".wz", target.VERSION);
+		this.wzFile.parse(stream);
 	}
 
 	protected void exportImage(String out, Image img) {
@@ -74,8 +77,31 @@ public abstract class Extractor {
 	}
 
 	protected void extract() {
-		System.out.println("Extacting " + wz + "...");
-		subExtract();
+		System.out.println("Started extracting " + wz + "...");
+		WzObject<?, ?> root = wzFile.getRoot();
+		internalExtract(root);
+		System.out.println("Finished extracting " + wz + "...");
+	}
+
+	private void internalExtract(WzObject<?, ?> root) {
+		if (root.getChildren() == null) {
+			return;
+		}
+
+		for (WzObject<?, ?> child : root) {
+			if (child instanceof WzProperty<?>) {
+				WzProperty<?> obj = (WzProperty<?>) child;
+				String in = obj.getFullPath();
+
+				subExtract(obj, in);
+			}
+
+			internalExtract(child);
+
+			if (child instanceof WzImage) {
+				((WzImage) child).unparse();
+			}
+		}
 	}
 
 	protected String getOutPath(String in) {
@@ -86,7 +112,7 @@ public abstract class Extractor {
 		}
 	}
 
-	public abstract void subExtract();
+	public abstract void subExtract(WzProperty<?> obj, String in);
 
 	public abstract int getId(String path);
 
