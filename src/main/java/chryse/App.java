@@ -30,9 +30,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import chryse.unit.ItemExtractor;
-import chryse.unit.MapExtractor;
-import chryse.unit.NpcExtractor;
+import chryse.extractors.ItemExtractor;
+import chryse.extractors.MapExtractor;
+import chryse.extractors.NpcExtractor;
 
 public class App {
 

@@ -25,9 +25,35 @@
 
 package chryse;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.ImageIO;
+
 public class Utility {
 
 	public static boolean isNumeric(String string) {
 		return string != null && string.matches("[-+]?\\d*\\.?\\d+");
+	}
+
+	public static void exportImage(String wz, String out, Image image) {
+
+		try {
+			File file = new File("dump/" + wz + "/" + out + ".png");
+
+			if (file.exists()) {
+				file.delete();
+			} else {
+				file.mkdirs();
+				file.createNewFile();
+			}
+
+			ImageIO.write((BufferedImage) image, "png", file);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		image.flush();
 	}
 }

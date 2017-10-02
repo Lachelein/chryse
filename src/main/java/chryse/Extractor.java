@@ -25,12 +25,7 @@
 
 package chryse;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.nio.file.Paths;
-
-import javax.imageio.ImageIO;
 
 import wz.WzFile;
 import wz.WzImage;
@@ -49,38 +44,19 @@ public abstract class Extractor {
 		this.fullDump = fullDump;
 
 		WzMappedInputStream stream = new WzMappedInputStream(Paths.get("wz/" + wz + ".wz"));
-		stream.setKey(target.KEY);
+		stream.setKey(target.key);
 
-		this.wzFile = new WzFile("wz/" + wz + ".wz", target.VERSION);
+		this.wzFile = new WzFile("wz/" + wz + ".wz", target.version);
 		this.wzFile.parse(stream);
 	}
 
-	protected void exportImage(String out, Image img) {
-
-		try {
-
-			File file = new File("dump/" + wz + "/" + out + ".png");
-
-			if (file.exists()) {
-				file.delete();
-			} else {
-				file.mkdirs();
-				file.createNewFile();
-			}
-
-			ImageIO.write((BufferedImage) img, "png", file);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		img.flush();
-	}
-
 	protected void extract() {
-		System.out.println("Started extracting " + wz + "...");
+		System.out.println("Started extracting " + wz + ".wz...");
+
 		WzObject<?, ?> root = wzFile.getRoot();
 		internalExtract(root);
-		System.out.println("Finished extracting " + wz + "...");
+
+		System.out.println("Finished extracting " + wz + ".wz...");
 	}
 
 	private void internalExtract(WzObject<?, ?> root) {

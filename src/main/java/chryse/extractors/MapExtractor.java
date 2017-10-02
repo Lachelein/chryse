@@ -23,7 +23,7 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chryse.unit;
+package chryse.extractors;
 
 import java.awt.Image;
 import java.util.HashSet;
@@ -31,15 +31,16 @@ import java.util.Set;
 
 import chryse.Extractor;
 import chryse.Target;
+import chryse.Utility;
 import wz.WzProperty;
 import wz.common.PNG;
 
-public class NpcExtractor extends Extractor {
+public class MapExtractor extends Extractor {
 
 	Set<Integer> dumped = new HashSet<Integer>();
 
-	public NpcExtractor(Target target, boolean fullDump) {
-		super(target, fullDump, "Npc");
+	public MapExtractor(Target target, boolean fullDump) {
+		super(target, fullDump, "Map");
 	}
 
 	@Override
@@ -64,6 +65,10 @@ public class NpcExtractor extends Extractor {
 
 		if (obj.getValue() instanceof PNG) {
 
+			if (!in.contains("miniMap")) {
+				return;
+			}
+
 			int id = getId(in);
 
 			if (id == 0) {
@@ -87,7 +92,7 @@ public class NpcExtractor extends Extractor {
 
 			String out = getOutPath(in);
 
-			exportImage(out, img);
+			Utility.exportImage(wz, out, img);
 		}
 	}
 

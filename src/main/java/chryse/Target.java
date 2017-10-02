@@ -32,14 +32,14 @@ import wz.common.WzVersion;
 
 public class Target {
 
-	public byte[] KEY;
-	public short VERSION;
-	public WzVersion LOCALE;
+	public byte[] key;
+	public short version;
+	public WzVersion locale;
 
 	public Target(Properties prop) {
-		this.LOCALE = WzVersion.valueOf(prop.getProperty("locale"));
-		this.VERSION = Short.parseShort(prop.getProperty("version"));
-		this.KEY = WzTool.generateKey(this.LOCALE);
+		this.locale = WzVersion.valueOf(prop.getProperty("locale"));
+		this.version = Short.parseShort(prop.getProperty("version"));
+		this.key = WzTool.generateKey(this.locale);
 	}
 
 }

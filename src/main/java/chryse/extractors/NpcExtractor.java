@@ -1,6 +1,6 @@
 /*
  	This file is part of Lachelein: MapleStory Web Database
-	Copyright (C) 2017  Alan Morel <alan.morel@nyu.edu>
+ 	Copyright (C) 2017  Alan Morel <alan.morel@nyu.edu>
 	Copyright (C) 2017  Brenterino <therealspookster@gmail.com>
 
 	Permission is hereby granted, free of charge, to any person obtaining
@@ -23,9 +23,11 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chryse.unit;
+package chryse.extractors;
 
 import java.awt.Image;
+import java.util.HashSet;
+import java.util.Set;
 
 import chryse.Extractor;
 import chryse.Target;
@@ -33,10 +35,12 @@ import chryse.Utility;
 import wz.WzProperty;
 import wz.common.PNG;
 
-public class ItemExtractor extends Extractor {
+public class NpcExtractor extends Extractor {
 
-	public ItemExtractor(Target target, boolean fullDump) {
-		super(target, fullDump, "Item");
+	Set<Integer> dumped = new HashSet<Integer>();
+
+	public NpcExtractor(Target target, boolean fullDump) {
+		super(target, fullDump, "Npc");
 	}
 
 	@Override
@@ -46,16 +50,10 @@ public class ItemExtractor extends Extractor {
 
 		for (String s : split) {
 
-			if (s.contains("info") || s.contains("icon")) {
-				break;
-			}
-
 			if (s.contains(".img")) {
 				s = s.substring(0, s.length() - 4);
-			}
-
-			if (Utility.isNumeric(s)) {
 				id = Integer.parseInt(s);
+				break;
 			}
 		}
 
@@ -67,17 +65,13 @@ public class ItemExtractor extends Extractor {
 
 		if (obj.getValue() instanceof PNG) {
 
-			if (!in.contains("icon")) {
-				return;
-			}
-
-			if (in.contains("Raw")) {
-				return;
-			}
-
 			int id = getId(in);
 
 			if (id == 0) {
+				return;
+			}
+
+			if (dumped.contains(id)) {
 				return;
 			}
 
@@ -90,9 +84,11 @@ public class ItemExtractor extends Extractor {
 
 			System.out.println(in + " has ID of " + id);
 
+			dumped.add(id);
+
 			String out = getOutPath(in);
 
-			exportImage(out, img);
+			Utility.exportImage(wz, out, img);
 		}
 	}
 
