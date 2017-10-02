@@ -35,8 +35,8 @@ import wz.io.WzMappedInputStream;
 
 public abstract class Extractor {
 
-	protected WzFile wzFile;
-	protected String wz;
+	private WzFile wzFile;
+	private String wz;
 
 	public Extractor(Target target, String wz) {
 		this.wz = wz;
@@ -49,12 +49,12 @@ public abstract class Extractor {
 	}
 
 	protected void extract() {
-		System.out.println("Started extracting " + wz + ".wz...");
+		System.out.println("Started extracting " + wz + ".wz");
 
 		WzObject<?, ?> root = wzFile.getRoot();
 		internalExtract(root);
 
-		System.out.println("Finished extracting " + wz + ".wz...");
+		System.out.println("Finished extracting " + wz + ".wz");
 	}
 
 	private void internalExtract(WzObject<?, ?> root) {

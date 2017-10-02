@@ -54,7 +54,6 @@ public class Utility {
 	}
 
 	public static void exportImage(String wz, String out, Image image) {
-
 		try {
 			File file = new File("dump/" + wz + "/" + out + ".png");
 

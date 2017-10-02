@@ -54,7 +54,6 @@ public class MapExtractor extends Extractor {
 		String mapMark = WzDataTool.getString(mapMarkObj, "None");
 
 		WzObject<?, ?> miniMap = parent.getChild("miniMap");
-
 		if (miniMap != null) {
 			WzProperty<?> image = (WzProperty<?>) miniMap.getChild("canvas");
 			extractImage(image, path);

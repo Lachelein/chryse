@@ -44,21 +44,21 @@ public class ItemExtractor extends Extractor {
 		}
 
 		if (path.contains("Pet")) {
-			int id = getId(path);
-			System.out.println(path + " id: " + id);
-
-			WzProperty<?> image = (WzProperty<?>) parent.getChildByPath("stand0/0");
-			extractImage(image, path);
-
-		} else {
-			for (WzObject<?, ?> item : parent) {
-				path = item.getFullPath();
-				int id = getId(item.getFullPath());
-				System.out.println(item.getFullPath() + " id: " + id);
-
-				WzProperty<?> image = (WzProperty<?>) item.getChildByPath("info/icon");
-				extractImage(image, path);
-			}
+			parseItem(parent, "stand0/0");
+			return;
 		}
+
+		for (WzObject<?, ?> item : parent) {
+			parseItem(item, "info/icon");
+		}
+	}
+
+	private void parseItem(WzObject<?, ?> item, String imagePath) {
+		String path = item.getFullPath();
+		int id = getId(path);
+		System.out.println(path + " id: " + id);
+
+		WzProperty<?> image = (WzProperty<?>) item.getChildByPath(imagePath);
+		extractImage(image, path);
 	}
 }

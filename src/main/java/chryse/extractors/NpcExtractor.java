@@ -41,7 +41,6 @@ public class NpcExtractor extends Extractor {
 		System.out.println(path);
 
 		WzObject<?, ?> stand = parent.getChild("stand");
-
 		if (stand != null) {
 			WzProperty<?> image = (WzProperty<?>) stand.getChild("0");
 			extractImage(image, path);

@@ -63,12 +63,10 @@ public class App {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			try {
+				input.close();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 		return properties;
