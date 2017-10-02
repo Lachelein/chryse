@@ -25,79 +25,44 @@
 
 package chryse.extractors;
 
-import java.awt.Image;
-
 import chryse.Extractor;
 import chryse.Target;
-import chryse.Utility;
+import wz.WzObject;
 import wz.WzProperty;
-import wz.common.PNG;
 
 public class ItemExtractor extends Extractor {
 
-	public ItemExtractor(Target target, boolean fullDump) {
-		super(target, fullDump, "Item");
+	public ItemExtractor(Target target) {
+		super(target, "Item");
 	}
 
 	@Override
-	public int getId(String path) {
-		String[] split = path.split("/");
-		int id = 0;
+	public void parse(WzObject<?, ?> parent, String path) {
 
-		for (String s : split) {
-
-			if (s.contains("info") || s.contains("icon")) {
-				break;
-			}
-
-			if (s.contains(".img")) {
-				s = s.substring(0, s.length() - 4);
-			}
-
-			if (Utility.isNumeric(s)) {
-				id = Integer.parseInt(s);
-			}
+		if (path.contains("Special")) {
+			return;
 		}
 
-		return id;
-	}
+		if (path.contains("Pet")) {
+			int id = getId(path);
+			System.out.println(path + " id: " + id);
 
-	@Override
-	public void subExtract(WzProperty<?> obj, String in) {
+			WzObject<?, ?> info = parent.getChild("stand0");
+			WzProperty<?> image = (WzProperty<?>) info.getChild("0");
 
-		if (obj.getValue() instanceof PNG) {
+			extractImage(image, path);
 
-			if (!in.contains("icon")) {
-				return;
+		} else {
+			for (WzObject<?, ?> item : parent) {
+				path = item.getFullPath();
+				int id = getId(item.getFullPath());
+				System.out.println(item.getFullPath() + " id: " + id);
+
+				WzObject<?, ?> info = item.getChild("info");
+				WzProperty<?> image = (WzProperty<?>) info.getChild("icon");
+
+				extractImage(image, path);
 			}
-
-			if (in.contains("Raw")) {
-				return;
-			}
-
-			int id = getId(in);
-
-			if (id == 0) {
-				return;
-			}
-
-			PNG value = (PNG) obj.getValue();
-			Image img = value.getImage(false);
-
-			if (img.getWidth(null) <= 4 || img.getHeight(null) <= 4) {
-				return;
-			}
-
-			System.out.println(in + " has ID of " + id);
-
-			String out = getOutPath(in);
-
-			Utility.exportImage(wz, out, img);
 		}
-	}
-
-	@Override
-	public String getSubOutPath(String in) {
-		return Integer.toString(getId(in));
 	}
 }

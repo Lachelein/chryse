@@ -25,79 +25,44 @@
 
 package chryse.extractors;
 
-import java.awt.Image;
-import java.util.HashSet;
-import java.util.Set;
-
 import chryse.Extractor;
 import chryse.Target;
-import chryse.Utility;
+import wz.WzObject;
 import wz.WzProperty;
-import wz.common.PNG;
+import wz.common.WzDataTool;
 
 public class MapExtractor extends Extractor {
 
-	Set<Integer> dumped = new HashSet<Integer>();
-
-	public MapExtractor(Target target, boolean fullDump) {
-		super(target, fullDump, "Map");
+	public MapExtractor(Target target) {
+		super(target, "Map");
 	}
 
 	@Override
-	public int getId(String path) {
-		String[] split = path.split("/");
-		int id = 0;
-
-		for (String s : split) {
-
-			if (s.contains(".img")) {
-				s = s.substring(0, s.length() - 4);
-				id = Integer.parseInt(s);
-				break;
-			}
+	public void parse(WzObject<?, ?> parent, String path) {
+		if (path.length() > 10 && !path.contains("wz/Map.wz/M")) {
+			return;
 		}
 
-		return id;
-	}
-
-	@Override
-	public void subExtract(WzProperty<?> obj, String in) {
-
-		if (obj.getValue() instanceof PNG) {
-
-			if (!in.contains("miniMap")) {
-				return;
-			}
-
-			int id = getId(in);
-
-			if (id == 0) {
-				return;
-			}
-
-			if (dumped.contains(id)) {
-				return;
-			}
-
-			PNG value = (PNG) obj.getValue();
-			Image img = value.getImage(false);
-
-			if (img.getWidth(null) <= 4 || img.getHeight(null) <= 4) {
-				return;
-			}
-
-			System.out.println(in + " has ID of " + id);
-
-			dumped.add(id);
-
-			String out = getOutPath(in);
-
-			Utility.exportImage(wz, out, img);
+		if (path.contains("MapHelper") || path.contains("AreaCode")) {
+			return;
 		}
+
+		int id = getId(path);
+		System.out.println(path);
+
+		WzObject<?, ?> info = parent.getChild("info");
+
+		WzObject<?, ?> mapMapObj = info.getChild("mapMark");
+		String mapMark = WzDataTool.getString((WzProperty<?>) mapMapObj, "None");
+
+		WzObject<?, ?> miniMap = parent.getChild("miniMap");
+
+		if (miniMap != null) {
+			WzProperty<?> image = (WzProperty<?>) miniMap.getChild("canvas");
+			extractImage(image, path);
+		}
+
+		System.out.println("MAP ID: " + id + " mapMark: " + mapMark);
 	}
 
-	@Override
-	public String getSubOutPath(String in) {
-		return Integer.toString(getId(in));
-	}
 }

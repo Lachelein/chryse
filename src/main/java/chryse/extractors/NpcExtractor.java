@@ -25,75 +25,26 @@
 
 package chryse.extractors;
 
-import java.awt.Image;
-import java.util.HashSet;
-import java.util.Set;
-
 import chryse.Extractor;
 import chryse.Target;
-import chryse.Utility;
+import wz.WzObject;
 import wz.WzProperty;
-import wz.common.PNG;
 
 public class NpcExtractor extends Extractor {
 
-	Set<Integer> dumped = new HashSet<Integer>();
-
-	public NpcExtractor(Target target, boolean fullDump) {
-		super(target, fullDump, "Npc");
+	public NpcExtractor(Target target) {
+		super(target, "Npc");
 	}
 
 	@Override
-	public int getId(String path) {
-		String[] split = path.split("/");
-		int id = 0;
+	public void parse(WzObject<?, ?> parent, String path) {
+		System.out.println(path);
 
-		for (String s : split) {
+		WzObject<?, ?> stand = parent.getChild("stand");
 
-			if (s.contains(".img")) {
-				s = s.substring(0, s.length() - 4);
-				id = Integer.parseInt(s);
-				break;
-			}
+		if (stand != null) {
+			WzProperty<?> image = (WzProperty<?>) stand.getChild("0");
+			extractImage(image, path);
 		}
-
-		return id;
-	}
-
-	@Override
-	public void subExtract(WzProperty<?> obj, String in) {
-
-		if (obj.getValue() instanceof PNG) {
-
-			int id = getId(in);
-
-			if (id == 0) {
-				return;
-			}
-
-			if (dumped.contains(id)) {
-				return;
-			}
-
-			PNG value = (PNG) obj.getValue();
-			Image img = value.getImage(false);
-
-			if (img.getWidth(null) <= 4 || img.getHeight(null) <= 4) {
-				return;
-			}
-
-			System.out.println(in + " has ID of " + id);
-
-			dumped.add(id);
-
-			String out = getOutPath(in);
-
-			Utility.exportImage(wz, out, img);
-		}
-	}
-
-	@Override
-	public String getSubOutPath(String in) {
-		return Integer.toString(getId(in));
 	}
 }

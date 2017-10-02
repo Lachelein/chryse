@@ -37,11 +37,9 @@ public abstract class Extractor {
 
 	protected WzFile wzFile;
 	protected String wz;
-	protected boolean fullDump;
 
-	public Extractor(Target target, boolean fullDump, String wz) {
+	public Extractor(Target target, String wz) {
 		this.wz = wz;
-		this.fullDump = fullDump;
 
 		WzMappedInputStream stream = new WzMappedInputStream(Paths.get("wz/" + wz + ".wz"));
 		stream.setKey(target.key);
@@ -64,13 +62,16 @@ public abstract class Extractor {
 			return;
 		}
 
-		for (WzObject<?, ?> child : root) {
-			if (child instanceof WzProperty<?>) {
-				WzProperty<?> obj = (WzProperty<?>) child;
-				String in = obj.getFullPath();
+		String path = root.getFullPath();
 
-				subExtract(obj, in);
-			}
+		if (path.contains(".img")) {
+			parse(root, path);
+			return;
+		}
+
+		System.out.println("Iterating " + path);
+
+		for (WzObject<?, ?> child : root) {
 
 			internalExtract(child);
 
@@ -80,18 +81,32 @@ public abstract class Extractor {
 		}
 	}
 
-	protected String getOutPath(String in) {
-		if (fullDump) {
-			return in;
-		} else {
-			return getSubOutPath(in);
+	protected int getId(String path) {
+		String[] split = path.split("/");
+		int id = 0;
+
+		for (String s : split) {
+
+			if (s.contains(".img")) {
+				s = s.substring(0, s.length() - 4);
+			}
+
+			if (Utility.isNumeric(s)) {
+				id = Math.max(id, Integer.parseInt(s));
+			}
 		}
+
+		if (id == 0) {
+			new Exception("RETURNING 0 AS ID");
+		}
+
+		return id;
 	}
 
-	public abstract void subExtract(WzProperty<?> obj, String in);
+	protected void extractImage(WzProperty<?> icon, String path) {
+		String out = Integer.toString(getId(path));
+		Utility.extractImage(icon, wz, out);
+	}
 
-	public abstract int getId(String path);
-
-	public abstract String getSubOutPath(String in);
-
+	protected abstract void parse(WzObject<?, ?> parent, String path);
 }

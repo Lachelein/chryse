@@ -42,9 +42,9 @@ public class App {
 		Target target = new Target(properties);
 
 		Extractor[] extractors = {
-				new ItemExtractor(target, false),
-				new NpcExtractor(target, false),
-				new MapExtractor(target, false)
+				new ItemExtractor(target),
+				new NpcExtractor(target),
+				new MapExtractor(target)
 		};
 
 		for (Extractor extractor : extractors) {

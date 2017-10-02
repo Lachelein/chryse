@@ -31,10 +31,26 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
+import wz.WzProperty;
+import wz.common.PNG;
+
 public class Utility {
 
 	public static boolean isNumeric(String string) {
 		return string != null && string.matches("[-+]?\\d*\\.?\\d+");
+	}
+
+	public static void extractImage(WzProperty<?> icon, String wz, String out) {
+		if (icon.getValue() instanceof PNG) {
+			PNG value = (PNG) icon.getValue();
+			Image image = value.getImage(false);
+
+			if (image.getWidth(null) <= 4 || image.getHeight(null) <= 4) {
+				return;
+			}
+
+			Utility.exportImage(wz, out, image);
+		}
 	}
 
 	public static void exportImage(String wz, String out, Image image) {
