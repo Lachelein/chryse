@@ -47,9 +47,7 @@ public class ItemExtractor extends Extractor {
 			int id = getId(path);
 			System.out.println(path + " id: " + id);
 
-			WzObject<?, ?> info = parent.getChild("stand0");
-			WzProperty<?> image = (WzProperty<?>) info.getChild("0");
-
+			WzProperty<?> image = (WzProperty<?>) parent.getChildByPath("stand0/0");
 			extractImage(image, path);
 
 		} else {
@@ -58,9 +56,7 @@ public class ItemExtractor extends Extractor {
 				int id = getId(item.getFullPath());
 				System.out.println(item.getFullPath() + " id: " + id);
 
-				WzObject<?, ?> info = item.getChild("info");
-				WzProperty<?> image = (WzProperty<?>) info.getChild("icon");
-
+				WzProperty<?> image = (WzProperty<?>) item.getChildByPath("info/icon");
 				extractImage(image, path);
 			}
 		}

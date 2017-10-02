@@ -50,10 +50,8 @@ public class MapExtractor extends Extractor {
 		int id = getId(path);
 		System.out.println(path);
 
-		WzObject<?, ?> info = parent.getChild("info");
-
-		WzObject<?, ?> mapMapObj = info.getChild("mapMark");
-		String mapMark = WzDataTool.getString((WzProperty<?>) mapMapObj, "None");
+		WzProperty<?> mapMarkObj = (WzProperty<?>) parent.getChildByPath("info/mapMark");
+		String mapMark = WzDataTool.getString(mapMarkObj, "None");
 
 		WzObject<?, ?> miniMap = parent.getChild("miniMap");
 
