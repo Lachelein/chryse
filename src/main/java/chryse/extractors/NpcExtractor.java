@@ -46,4 +46,8 @@ public class NpcExtractor extends Extractor {
 			extractImage(image, path);
 		}
 	}
+
+	@Override
+	protected void finishExtraction() {
+	}
 }

@@ -25,13 +25,22 @@
 
 package chryse.extractors;
 
+import java.util.ArrayList;
+
 import chryse.Extractor;
 import chryse.Target;
+import chryse.Utility;
+import chryse.entities.Map;
+import chryse.entities.map.MapMonster;
+import chryse.entities.map.MapNPC;
+import chryse.entities.map.MapPortal;
 import wz.WzObject;
 import wz.WzProperty;
 import wz.common.WzDataTool;
 
 public class MapExtractor extends Extractor {
+
+	public ArrayList<Map> maps = new ArrayList<Map>();
 
 	public MapExtractor(Target target) {
 		super(target, "Map");
@@ -39,19 +48,26 @@ public class MapExtractor extends Extractor {
 
 	@Override
 	public void parse(WzObject<?, ?> parent, String path) {
-		if (path.length() > 10 && !path.contains("wz/Map.wz/M")) {
+
+		if (path.length() > 13 && !path.contains(".wz/M")) {
 			return;
 		}
 
-		if (path.contains("MapHelper") || path.contains("AreaCode")) {
+		String[] block = {
+				"MapHelper",
+				"AreaCode",
+				"Obj",
+				"WorldMap",
+				"Back",
+				"Tile",
+				"Physics"
+		};
+
+		if (Utility.contains(path, block)) {
 			return;
 		}
 
-		int id = getId(path);
 		System.out.println(path);
-
-		WzProperty<?> mapMarkObj = (WzProperty<?>) parent.getChildByPath("info/mapMark");
-		String mapMark = WzDataTool.getString(mapMarkObj, "None");
 
 		WzObject<?, ?> miniMap = parent.getChild("miniMap");
 		if (miniMap != null) {
@@ -59,7 +75,82 @@ public class MapExtractor extends Extractor {
 			extractImage(image, path);
 		}
 
-		System.out.println("MAP ID: " + id + " mapMark: " + mapMark);
+		int id = getId(path);
+		String mapMark = WzDataTool.getString(parent, "info/mapMark", "None");
+		String bgm = WzDataTool.getString(parent, "info/bgm", "None");
+		int returnMap = WzDataTool.getInteger(parent, "info/returnMap", -1);
+
+		Map map = new Map(id, mapMark, bgm, returnMap);
+
+		addLife(parent, map);
+		addPortals(parent, map);
+
+		maps.add(map);
+	}
+
+	private void addPortals(WzObject<?, ?> parent, Map map) {
+		WzObject<?, ?> portals = parent.getChild("portal");
+
+		if (portals == null) {
+			return;
+		}
+
+		for (WzObject<?, ?> child : portals) {
+			int destination = WzDataTool.getInteger(child, "tm", -1);
+			int x = WzDataTool.getInteger(child, "x", -1);
+			int y = WzDataTool.getInteger(child, "y", -1);
+
+			MapPortal portal = new MapPortal(destination);
+			portal.x = x;
+			portal.y = y;
+
+			map.add(portal);
+		}
+	}
+
+	private void addLife(WzObject<?, ?> parent, Map map) {
+		WzObject<?, ?> life = parent.getChild("life");
+
+		if (life == null) {
+			return;
+		}
+
+		for (WzObject<?, ?> child : life) {
+			int id = Integer.parseInt(WzDataTool.getString(child, "id", "0"));
+			int x = WzDataTool.getInteger(child, "x", -1);
+			int y = WzDataTool.getInteger(child, "y", -1);
+			String type = WzDataTool.getString(child, "type", "None");
+
+			if (type.equals("n")) {
+				MapNPC npc = new MapNPC(id, x, y);
+				map.add(npc);
+			} else if (type.equals("m")) {
+				MapMonster monster = new MapMonster(id, x, y);
+				map.add(monster);
+			}
+		}
+	}
+
+	@Override
+	protected void finishExtraction() {
+		StringBuilder mapBuilder = new StringBuilder();
+		StringBuilder npcsBuilder = new StringBuilder();
+		StringBuilder monstersBuilder = new StringBuilder();
+		StringBuilder portalBuilder = new StringBuilder();
+
+		for (Map map : maps) {
+			map.querify(mapBuilder, 0);
+
+			map.npcs.forEach(npc -> npc.querify(npcsBuilder, map.id));
+			map.monsters.forEach(monster -> monster.querify(monstersBuilder, map.id));
+			map.portals.forEach(portal -> portal.querify(portalBuilder, map.id));
+		}
+
+		System.out.println(mapBuilder.toString());
+		System.out.println(npcsBuilder.toString());
+		System.out.println(monstersBuilder.toString());
+		System.out.println(portalBuilder.toString());
+
 	}
 
 }

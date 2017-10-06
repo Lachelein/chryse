@@ -71,4 +71,13 @@ public class Utility {
 
 		image.flush();
 	}
+
+	public static boolean contains(String text, String[] block) {
+		for (String b : block) {
+			if (text.contains(b)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

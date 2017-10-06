@@ -1,6 +1,6 @@
 /*
  	This file is part of Lachelein: MapleStory Web Database
-	Copyright (C) 2017  Alan Morel <alan.morel@nyu.edu>
+ 	Copyright (C) 2017  Alan Morel <alan.morel@nyu.edu>
 	Copyright (C) 2017  Brenterino <therealspookster@gmail.com>
 
 	Permission is hereby granted, free of charge, to any person obtaining
@@ -23,46 +23,25 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chryse.extractors;
+package chryse.entities.map;
 
-import chryse.Extractor;
-import chryse.Target;
-import wz.WzObject;
-import wz.WzProperty;
+import chryse.Querifiable;
 
-public class ItemExtractor extends Extractor {
+public class MapNPC extends MapLife implements Querifiable {
 
-	public ItemExtractor(Target target) {
-		super(target, "Item");
+	public MapNPC(int id, int x, int y) {
+		this.id = id;
+		this.x = x;
+		this.y = y;
 	}
 
 	@Override
-	public void parse(WzObject<?, ?> parent, String path) {
-
-		if (path.contains("Special")) {
-			return;
-		}
-
-		if (path.contains("Pet")) {
-			parseItem(parent, "stand0/0");
-			return;
-		}
-
-		for (WzObject<?, ?> item : parent) {
-			parseItem(item, "info/icon");
-		}
-	}
-
-	private void parseItem(WzObject<?, ?> item, String imagePath) {
-		String path = item.getFullPath();
-		int id = getId(path);
-		System.out.println(path + " id: " + id);
-
-		WzProperty<?> image = (WzProperty<?>) item.getChildByPath(imagePath);
-		extractImage(image, path);
+	public String getInsertQuery(int relationshipKey) {
+		return "INSERT INTO map_npcs (map_id, id, x, y) VALUES (" + relationshipKey + ", " + id + ", " + x + ", " + y + ");\r\n";
 	}
 
 	@Override
-	protected void finishExtraction() {
+	public void querify(StringBuilder builder, int relationshipKey) {
+		builder.append(getInsertQuery(relationshipKey));
 	}
 }

@@ -54,6 +54,7 @@ public abstract class Extractor {
 		WzObject<?, ?> root = wzFile.getRoot();
 		internalExtract(root);
 
+		finishExtraction();
 		System.out.println("Finished extracting " + wz + ".wz");
 	}
 
@@ -69,7 +70,7 @@ public abstract class Extractor {
 			return;
 		}
 
-		System.out.println("Iterating " + path);
+		System.out.println("Iterating " + path + " Length: " + path.length());
 
 		for (WzObject<?, ?> child : root) {
 
@@ -109,4 +110,7 @@ public abstract class Extractor {
 	}
 
 	protected abstract void parse(WzObject<?, ?> parent, String path);
+
+	protected abstract void finishExtraction();
+
 }

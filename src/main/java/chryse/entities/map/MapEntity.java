@@ -1,6 +1,6 @@
 /*
  	This file is part of Lachelein: MapleStory Web Database
-	Copyright (C) 2017  Alan Morel <alan.morel@nyu.edu>
+ 	Copyright (C) 2017  Alan Morel <alan.morel@nyu.edu>
 	Copyright (C) 2017  Brenterino <therealspookster@gmail.com>
 
 	Permission is hereby granted, free of charge, to any person obtaining
@@ -23,46 +23,11 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chryse.extractors;
+package chryse.entities.map;
 
-import chryse.Extractor;
-import chryse.Target;
-import wz.WzObject;
-import wz.WzProperty;
+public abstract class MapEntity {
 
-public class ItemExtractor extends Extractor {
+	public int x;
+	public int y;
 
-	public ItemExtractor(Target target) {
-		super(target, "Item");
-	}
-
-	@Override
-	public void parse(WzObject<?, ?> parent, String path) {
-
-		if (path.contains("Special")) {
-			return;
-		}
-
-		if (path.contains("Pet")) {
-			parseItem(parent, "stand0/0");
-			return;
-		}
-
-		for (WzObject<?, ?> item : parent) {
-			parseItem(item, "info/icon");
-		}
-	}
-
-	private void parseItem(WzObject<?, ?> item, String imagePath) {
-		String path = item.getFullPath();
-		int id = getId(path);
-		System.out.println(path + " id: " + id);
-
-		WzProperty<?> image = (WzProperty<?>) item.getChildByPath(imagePath);
-		extractImage(image, path);
-	}
-
-	@Override
-	protected void finishExtraction() {
-	}
 }
