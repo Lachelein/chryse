@@ -37,7 +37,7 @@ public class MapMonster extends MapLife implements Querifiable {
 
 	@Override
 	public String getInsertQuery(int relationshipKey) {
-		return "INSERT INTO map_monsters (map_id, id, x, y) VALUES (" + relationshipKey + ", " + id + ", " + x + ", " + y + ");\r\n";
+		return "INSERT INTO map_monsters (map_id, monster_id, x, y) VALUES (" + relationshipKey + ", " + id + ", " + x + ", " + y + ");\r\n";
 	}
 
 	@Override

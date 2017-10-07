@@ -23,25 +23,46 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chryse.entities.map;
+package chryse.extractors;
 
-import chryse.Querifiable;
+import chryse.Extractor;
+import chryse.Target;
+import chryse.Utility;
+import wz.WzObject;
+import wz.WzProperty;
 
-public class MapNPC extends MapLife implements Querifiable {
+public class CharacterExtractor extends Extractor {
 
-	public MapNPC(int id, int x, int y) {
-		this.id = id;
-		this.x = x;
-		this.y = y;
+	public CharacterExtractor(Target target) {
+		super(target, "Character");
 	}
 
 	@Override
-	public String getInsertQuery(int relationshipKey) {
-		return "INSERT INTO map_npcs (map_id, npc_id, x, y) VALUES (" + relationshipKey + ", " + id + ", " + x + ", " + y + ");\r\n";
+	public void parse(WzObject<?, ?> parent, String path) {
+
+		if (path.length() <= 28) {
+			return;
+		}
+
+		String[] block = {
+				"Face",
+				"Hair"
+		};
+
+		if (Utility.contains(path, block)) {
+			return;
+		}
+
+		WzObject<?, ?> info = parent.getChild("info");
+		if (info != null) {
+			WzProperty<?> image = (WzProperty<?>) info.getChild("iconRaw");
+			extractImage(image, path);
+		}
 	}
 
 	@Override
-	public void querify(StringBuilder builder, int relationshipKey) {
-		builder.append(getInsertQuery(relationshipKey));
+	protected void finishExtraction() {
+
 	}
+
 }

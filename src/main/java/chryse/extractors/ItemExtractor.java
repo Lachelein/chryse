@@ -25,12 +25,18 @@
 
 package chryse.extractors;
 
+import java.util.ArrayList;
+
 import chryse.Extractor;
 import chryse.Target;
+import chryse.entities.item.Item;
 import wz.WzObject;
 import wz.WzProperty;
+import wz.common.WzDataTool;
 
 public class ItemExtractor extends Extractor {
+
+	public ArrayList<Item> items = new ArrayList<Item>();
 
 	public ItemExtractor(Target target) {
 		super(target, "Item");
@@ -43,26 +49,62 @@ public class ItemExtractor extends Extractor {
 			return;
 		}
 
-		if (path.contains("Pet")) {
-			parseItem(parent, "stand0/0");
-			return;
-		}
+		Item item = new Item();
+		item.id = getId(path);
 
-		for (WzObject<?, ?> item : parent) {
-			parseItem(item, "info/icon");
+		if (path.contains("Pet")) {
+			parsePet(item, parent);
+			dumpIcon(parent, "stand0/0");
+		} else {
+			for (WzObject<?, ?> child : parent) {
+				if (item.id >= 5000000 && item.id < 6000000) {
+					parseCashItem(item, parent);
+				} else if (item.id >= 2000000 && item.id < 3000000) {
+					parseConsumable(item, parent);
+				} else if (item.id >= 4000000 && item.id < 5000000) {
+					parseEtc(item, parent);
+				}
+				dumpIcon(child, "info/icon");
+			}
 		}
 	}
 
-	private void parseItem(WzObject<?, ?> item, String imagePath) {
+	private void parsePet(Item item, WzObject<?, ?> parent) {
+		item.price = WzDataTool.getInteger(parent, "info/price", -1);
+		item.hungry = WzDataTool.getInteger(parent, "info/hungry", -1);
+	}
+
+	private void parseCashItem(Item item, WzObject<?, ?> parent) {
+		// nothing to do here
+	}
+
+	private void parseConsumable(Item item, WzObject<?, ?> parent) {
+		item.price = WzDataTool.getInteger(parent, "info/price", -1);
+		item.slotMax = WzDataTool.getInteger(parent, "info/slotMax", -1);
+		item.time = WzDataTool.getInteger(parent, "spec/time", -1);
+	}
+
+	private void parseEtc(Item item, WzObject<?, ?> parent) {
+		item.price = WzDataTool.getInteger(parent, "info/price", -1);
+		item.slotMax = WzDataTool.getInteger(parent, "info/slotMax", -1);
+		item.lv = WzDataTool.getInteger(parent, "info/lv", -1);
+	}
+
+	private void dumpIcon(WzObject<?, ?> item, String imagePath) {
 		String path = item.getFullPath();
 		int id = getId(path);
 		System.out.println(path + " id: " + id);
 
 		WzProperty<?> image = (WzProperty<?>) item.getChildByPath(imagePath);
-		extractImage(image, path);
+		// extractImage(image, path);
 	}
 
 	@Override
 	protected void finishExtraction() {
+		StringBuilder itemBuilder = new StringBuilder();
+
+		items.forEach(item -> item.querify(itemBuilder, item.id));
+
+		System.out.println(itemBuilder.toString());
 	}
 }

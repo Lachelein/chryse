@@ -1,7 +1,7 @@
 /*
  	This file is part of Lachelein: MapleStory Web Database
- 	Copyright (C) 2017  Alan Morel <alan.morel@nyu.edu>
-	Copyright (C) 2017  Brenterino <therealspookster@gmail.com>
+	Copyright (C) 2017  Alan Morel <alan.morel@nyu.edu>
+    Copyright (C) 2017  Brenterino <therealspookster@gmail.com>
 
 	Permission is hereby granted, free of charge, to any person obtaining
 	a copy of this software and associated documentation files (the
@@ -23,25 +23,38 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chryse.entities.map;
+package chryse.entities.monster;
 
 import chryse.Querifiable;
 
-public class MapNPC extends MapLife implements Querifiable {
+public class Monster implements Querifiable {
 
-	public MapNPC(int id, int x, int y) {
-		this.id = id;
-		this.x = x;
-		this.y = y;
-	}
+	public int id;
+	public int acc;
+	public int boss;
+	public int bodyAttack;
+	public int eva;
+	public int exp;
+	public int level;
+	public int MADamage;
+	public int maxHP;
+	public int maxMP;
+	public int MDDamage;
+	public int mobType;
+	public int PADamage;
+	public int PDDamage;
+	public int pushed;
+	public int speed;
+	public int undead;
 
 	@Override
 	public String getInsertQuery(int relationshipKey) {
-		return "INSERT INTO map_npcs (map_id, npc_id, x, y) VALUES (" + relationshipKey + ", " + id + ", " + x + ", " + y + ");\r\n";
+		return "INSERT INTO monsters (id, acc, boss, bodyAttack, eva, exp, level, MDDamage, maxHP, maxMP, MADamage, mobType, PADamage, PDDamage, pushed, speed, undead) VALUES (" + id + ", " + acc + ", " + boss + ", " + bodyAttack + ", " + eva + ", " + exp + ", " + level + ", " + MADamage + ", " + maxHP + ", " + maxMP + ", " + MDDamage + ", " + mobType + ", " + PADamage + ", " + PDDamage + ", " + pushed + ", " + speed + ", " + undead + ");\r\n";
 	}
 
 	@Override
 	public void querify(StringBuilder builder, int relationshipKey) {
 		builder.append(getInsertQuery(relationshipKey));
 	}
+
 }

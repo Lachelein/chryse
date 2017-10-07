@@ -1,11 +1,8 @@
-package chryse.entities;
+package chryse.entities.map;
 
 import java.util.ArrayList;
 
 import chryse.Querifiable;
-import chryse.entities.map.MapMonster;
-import chryse.entities.map.MapNPC;
-import chryse.entities.map.MapPortal;
 
 public class Map implements Querifiable {
 

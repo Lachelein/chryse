@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import chryse.Extractor;
 import chryse.Target;
 import chryse.Utility;
-import chryse.entities.Map;
+import chryse.entities.map.Map;
 import chryse.entities.map.MapMonster;
 import chryse.entities.map.MapNPC;
 import chryse.entities.map.MapPortal;

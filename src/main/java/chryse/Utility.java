@@ -40,9 +40,9 @@ public class Utility {
 		return string != null && string.matches("[-+]?\\d*\\.?\\d+");
 	}
 
-	public static void extractImage(WzProperty<?> icon, String wz, String out) {
-		if (icon.getValue() instanceof PNG) {
-			PNG value = (PNG) icon.getValue();
+	public static void extractImage(WzProperty<?> property, String wz, String out) {
+		if (property.getValue() instanceof PNG) {
+			PNG value = (PNG) property.getValue();
 			Image image = value.getImage(false);
 
 			if (image.getWidth(null) <= 4 || image.getHeight(null) <= 4) {
