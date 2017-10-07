@@ -25,9 +25,32 @@
 
 package chryse;
 
-public interface Querifiable {
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-	public String getInsertQuery(int relationshipKey);
+public abstract class Querifiable {
 
-	public void querify(StringBuilder builder, int relationshipKey);
+	public abstract LinkedHashMap<String, Object> getQueryParameters(int relationshipKey);
+
+	public abstract String getTableName();
+
+	public String querify(int relationshipKey) {
+		HashMap<String, Object> parameters = getQueryParameters(relationshipKey);
+
+		StringBuilder query = new StringBuilder("INSERT INTO " + getTableName() + " (");
+		for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+			query.append(entry.getKey() + ", ");
+		}
+		query.setLength(query.length() - 2);
+		query.append(") VALUES (");
+
+		for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+			query.append(entry.getValue().toString() + ", ");
+		}
+		query.setLength(query.length() - 2);
+		query.append(");\r\n");
+
+		return query.toString();
+	}
 }

@@ -1,10 +1,11 @@
 package chryse.entities.map;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import chryse.Querifiable;
 
-public class Map implements Querifiable {
+public class Map extends Querifiable {
 
 	public int id;
 	public String mapMark;
@@ -35,13 +36,18 @@ public class Map implements Querifiable {
 	}
 
 	@Override
-	public String getInsertQuery(int relationshipKey) {
-		return "INSERT INTO map (id, mark, bgm, return_map) VALUES (" + id + ", " + mapMark + ", " + bgm + ", " + returnMap + ");\r\n";
+	public String getTableName() {
+		return "map";
 	}
 
 	@Override
-	public void querify(StringBuilder builder, int relationshipKey) {
-		builder.append(getInsertQuery(relationshipKey));
+	public LinkedHashMap<String, Object> getQueryParameters(int relationshipKey) {
+		LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
+		parameters.put("id", id);
+		parameters.put("mark", mapMark);
+		parameters.put("bgm", bgm);
+		parameters.put("return_map", returnMap);
+		return parameters;
 	}
 
 }

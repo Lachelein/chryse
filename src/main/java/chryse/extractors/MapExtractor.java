@@ -139,11 +139,11 @@ public class MapExtractor extends Extractor {
 		StringBuilder portalBuilder = new StringBuilder();
 
 		for (Map map : maps) {
-			map.querify(mapBuilder, 0);
+			mapBuilder.append(map.querify(0));
 
-			map.npcs.forEach(npc -> npc.querify(npcsBuilder, map.id));
-			map.monsters.forEach(monster -> monster.querify(monstersBuilder, map.id));
-			map.portals.forEach(portal -> portal.querify(portalBuilder, map.id));
+			map.npcs.forEach(npc -> npcsBuilder.append(npc.querify(map.id)));
+			map.monsters.forEach(monster -> monstersBuilder.append(monster.querify(map.id)));
+			map.portals.forEach(portal -> portalBuilder.append(portal.querify(map.id)));
 		}
 
 		System.out.println(mapBuilder.toString());

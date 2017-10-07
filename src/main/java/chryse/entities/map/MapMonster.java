@@ -25,9 +25,15 @@
 
 package chryse.entities.map;
 
+import java.util.LinkedHashMap;
+
 import chryse.Querifiable;
 
-public class MapMonster extends MapLife implements Querifiable {
+public class MapMonster extends Querifiable {
+
+	public int id;
+	public int x;
+	public int y;
 
 	public MapMonster(int id, int x, int y) {
 		this.id = id;
@@ -36,12 +42,18 @@ public class MapMonster extends MapLife implements Querifiable {
 	}
 
 	@Override
-	public String getInsertQuery(int relationshipKey) {
-		return "INSERT INTO map_monsters (map_id, monster_id, x, y) VALUES (" + relationshipKey + ", " + id + ", " + x + ", " + y + ");\r\n";
+	public String getTableName() {
+		return "map_monsters";
 	}
 
 	@Override
-	public void querify(StringBuilder builder, int relationshipKey) {
-		builder.append(getInsertQuery(relationshipKey));
+	public LinkedHashMap<String, Object> getQueryParameters(int relationshipKey) {
+		LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
+		parameters.put("map_id", relationshipKey);
+		parameters.put("monster_id", id);
+		parameters.put("x", x);
+		parameters.put("y", y);
+		return parameters;
 	}
+
 }

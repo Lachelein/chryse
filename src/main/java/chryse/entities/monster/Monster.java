@@ -25,9 +25,11 @@
 
 package chryse.entities.monster;
 
+import java.util.LinkedHashMap;
+
 import chryse.Querifiable;
 
-public class Monster implements Querifiable {
+public class Monster extends Querifiable {
 
 	public int id;
 	public int acc;
@@ -48,13 +50,31 @@ public class Monster implements Querifiable {
 	public int undead;
 
 	@Override
-	public String getInsertQuery(int relationshipKey) {
-		return "INSERT INTO monsters (id, acc, boss, bodyAttack, eva, exp, level, MDDamage, maxHP, maxMP, MADamage, mobType, PADamage, PDDamage, pushed, speed, undead) VALUES (" + id + ", " + acc + ", " + boss + ", " + bodyAttack + ", " + eva + ", " + exp + ", " + level + ", " + MADamage + ", " + maxHP + ", " + maxMP + ", " + MDDamage + ", " + mobType + ", " + PADamage + ", " + PDDamage + ", " + pushed + ", " + speed + ", " + undead + ");\r\n";
+	public String getTableName() {
+		return "monsters";
 	}
 
 	@Override
-	public void querify(StringBuilder builder, int relationshipKey) {
-		builder.append(getInsertQuery(relationshipKey));
+	public LinkedHashMap<String, Object> getQueryParameters(int relationshipKey) {
+		LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
+		parameters.put("id", id);
+		parameters.put("acc", acc);
+		parameters.put("boss", boss);
+		parameters.put("bodyAttack", bodyAttack);
+		parameters.put("eva", eva);
+		parameters.put("exp", exp);
+		parameters.put("level", level);
+		parameters.put("MADamage", MADamage);
+		parameters.put("maxHP", maxHP);
+		parameters.put("maxMP", maxMP);
+		parameters.put("MDDamage", MDDamage);
+		parameters.put("mobType", mobType);
+		parameters.put("PADamage", PADamage);
+		parameters.put("PDDamage", PDDamage);
+		parameters.put("pushed", pushed);
+		parameters.put("speed", speed);
+		parameters.put("undead", undead);
+		return parameters;
 	}
 
 }

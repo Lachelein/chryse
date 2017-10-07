@@ -25,10 +25,14 @@
 
 package chryse.entities.map;
 
+import java.util.LinkedHashMap;
+
 import chryse.Querifiable;
 
-public class MapPortal extends MapEntity implements Querifiable {
+public class MapPortal extends Querifiable {
 
+	public int x;
+	public int y;
 	public int destination;
 
 	public MapPortal(int destination) {
@@ -36,12 +40,17 @@ public class MapPortal extends MapEntity implements Querifiable {
 	}
 
 	@Override
-	public String getInsertQuery(int relationshipKey) {
-		return "INSERT INTO map_portals (map_id, destination, x, y) VALUES (" + relationshipKey + ", " + destination + ", " + x + ", " + y + ");\r\n";
+	public String getTableName() {
+		return "map_portals";
 	}
 
 	@Override
-	public void querify(StringBuilder builder, int relationshipKey) {
-		builder.append(getInsertQuery(relationshipKey));
+	public LinkedHashMap<String, Object> getQueryParameters(int relationshipKey) {
+		LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
+		parameters.put("map_id", relationshipKey);
+		parameters.put("destination", destination);
+		parameters.put("x", x);
+		parameters.put("y", y);
+		return parameters;
 	}
 }

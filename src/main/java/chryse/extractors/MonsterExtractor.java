@@ -82,7 +82,7 @@ public class MonsterExtractor extends Extractor {
 	protected void finishExtraction() {
 		StringBuilder monsterBuilder = new StringBuilder();
 
-		monsters.forEach(monster -> monster.querify(monsterBuilder, monster.id));
+		monsters.forEach(monster -> monsterBuilder.append(monster.querify(monster.id)));
 
 		System.out.println(monsterBuilder.toString());
 

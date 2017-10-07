@@ -49,45 +49,61 @@ public class ItemExtractor extends Extractor {
 			return;
 		}
 
-		Item item = new Item();
-		item.id = getId(path);
-
 		if (path.contains("Pet")) {
+			Item item = new Item();
+			item.id = getId(path);
+
 			parsePet(item, parent);
 			dumpIcon(parent, "stand0/0");
+
+			items.add(item);
+
 		} else {
 			for (WzObject<?, ?> child : parent) {
-				if (item.id >= 5000000 && item.id < 6000000) {
-					parseCashItem(item, parent);
-				} else if (item.id >= 2000000 && item.id < 3000000) {
-					parseConsumable(item, parent);
+				Item item = new Item();
+				item.id = getId(child.getFullPath());
+
+				if (item.id >= 2000000 && item.id < 3000000) {
+					parseConsumable(item, child);
+				} else if (item.id >= 3000000 && item.id < 4000000) {
+					parseInstall(item, child);
 				} else if (item.id >= 4000000 && item.id < 5000000) {
-					parseEtc(item, parent);
+					parseEtc(item, child);
+				} else if (item.id >= 5000000 && item.id < 6000000) {
+					parseCashItem(item, child);
 				}
 				dumpIcon(child, "info/icon");
+				items.add(item);
+
 			}
 		}
 	}
 
-	private void parsePet(Item item, WzObject<?, ?> parent) {
-		item.price = WzDataTool.getInteger(parent, "info/price", -1);
-		item.hungry = WzDataTool.getInteger(parent, "info/hungry", -1);
+	private void parsePet(Item item, WzObject<?, ?> child) {
+		item.life = WzDataTool.getInteger(child, "info/life", -1);
+		item.hungry = WzDataTool.getInteger(child, "info/hungry", -1);
 	}
 
-	private void parseCashItem(Item item, WzObject<?, ?> parent) {
+	private void parseCashItem(Item item, WzObject<?, ?> child) {
 		// nothing to do here
 	}
 
-	private void parseConsumable(Item item, WzObject<?, ?> parent) {
-		item.price = WzDataTool.getInteger(parent, "info/price", -1);
-		item.slotMax = WzDataTool.getInteger(parent, "info/slotMax", -1);
-		item.time = WzDataTool.getInteger(parent, "spec/time", -1);
+	private void parseConsumable(Item item, WzObject<?, ?> child) {
+		item.price = WzDataTool.getInteger(child, "info/price", -1);
+		item.slotMax = WzDataTool.getInteger(child, "info/slotMax", -1);
+		item.time = WzDataTool.getInteger(child, "spec/time", -1);
 	}
 
-	private void parseEtc(Item item, WzObject<?, ?> parent) {
-		item.price = WzDataTool.getInteger(parent, "info/price", -1);
-		item.slotMax = WzDataTool.getInteger(parent, "info/slotMax", -1);
-		item.lv = WzDataTool.getInteger(parent, "info/lv", -1);
+	private void parseEtc(Item item, WzObject<?, ?> child) {
+		item.price = WzDataTool.getInteger(child, "info/price", -1);
+		item.slotMax = WzDataTool.getInteger(child, "info/slotMax", -1);
+		item.lv = WzDataTool.getInteger(child, "info/lv", -1);
+	}
+
+	private void parseInstall(Item item, WzObject<?, ?> child) {
+		item.price = WzDataTool.getInteger(child, "info/price", -1);
+		item.slotMax = WzDataTool.getInteger(child, "info/slotMax", -1);
+		item.reqLevel = WzDataTool.getInteger(child, "info/reqLevel", -1);
 	}
 
 	private void dumpIcon(WzObject<?, ?> item, String imagePath) {
@@ -103,7 +119,7 @@ public class ItemExtractor extends Extractor {
 	protected void finishExtraction() {
 		StringBuilder itemBuilder = new StringBuilder();
 
-		items.forEach(item -> item.querify(itemBuilder, item.id));
+		items.forEach(item -> itemBuilder.append(item.querify(item.id)));
 
 		System.out.println(itemBuilder.toString());
 	}
