@@ -62,14 +62,13 @@ public class App {
 		};
 
 		// Quest.wz
-		// String.wz
 
 		for (Extractor extractor : extractors) {
 			extractor.extract();
 		}
 
-		Database.buildQuery();
-		Database.printQuery();
+		String query = Database.buildQuery();
+		System.out.println(query);
 
 		long seconds = (System.nanoTime() - startTime) / 1000000000;
 		System.out.println("All files extracted in " + seconds + " seconds.");

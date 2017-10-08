@@ -18,78 +18,52 @@ public class Database {
 	private static LinkedHashMap<Integer, NPC> npcs = new LinkedHashMap<Integer, NPC>();
 	private static LinkedHashMap<Integer, Skill> skills = new LinkedHashMap<Integer, Skill>();
 
-	private static StringBuilder sqlQuery = new StringBuilder();
+	private static StringBuilder query = new StringBuilder();
 
-	public static void buildQuery() {
-		StringBuilder characterBuilder = new StringBuilder();
+	public static String buildQuery() {
 
-		Database.getEquips().forEach((id, equip) -> {
-			characterBuilder.append(equip.querify(equip.id));
+		getEquips().forEach((id, equip) -> {
+			query.append(equip.querify(equip.id));
 		});
 
-		Database.addQuery(characterBuilder);
-
-		StringBuilder itemBuilder = new StringBuilder();
-
-		Database.getItems().forEach((id, item) -> {
-			itemBuilder.append(item.querify(item.id));
+		getItems().forEach((id, item) -> {
+			query.append(item.querify(item.id));
 		});
 
-		Database.addQuery(itemBuilder);
+		StringBuilder npcsStringBuilder = new StringBuilder();
+		StringBuilder monstersStringBuilder = new StringBuilder();
+		StringBuilder portalsStringBuilder = new StringBuilder();
 
-		StringBuilder mapBuilder = new StringBuilder();
-		StringBuilder mapNpcsBuilder = new StringBuilder();
-		StringBuilder mapMonstersBuilder = new StringBuilder();
-		StringBuilder mapPortalBuilder = new StringBuilder();
+		for (Map map : getMaps().values()) {
+			query.append(map.querify(map.id));
 
-		for (Map map : Database.getMaps().values()) {
-			mapBuilder.append(map.querify(map.id));
-
-			map.npcs.forEach(npc -> mapNpcsBuilder.append(npc.querify(map.id)));
-			map.monsters.forEach(monster -> mapMonstersBuilder.append(monster.querify(map.id)));
-			map.portals.forEach(portal -> mapPortalBuilder.append(portal.querify(map.id)));
+			map.npcs.forEach(npc -> npcsStringBuilder.append(npc.querify(map.id)));
+			map.monsters.forEach(monster -> monstersStringBuilder.append(monster.querify(map.id)));
+			map.portals.forEach(portal -> portalsStringBuilder.append(portal.querify(map.id)));
 		}
 
-		Database.addQuery(mapBuilder);
-		Database.addQuery(mapNpcsBuilder);
-		Database.addQuery(mapMonstersBuilder);
-		Database.addQuery(mapPortalBuilder);
+		query.append(npcsStringBuilder.toString());
+		query.append(monstersStringBuilder.toString());
+		query.append(portalsStringBuilder.toString());
 
-		StringBuilder monsterBuilder = new StringBuilder();
-
-		Database.getMonsters().forEach((id, monster) -> {
-			monsterBuilder.append(monster.querify(monster.id));
+		getMonsters().forEach((id, monster) -> {
+			query.append(monster.querify(monster.id));
 		});
 
-		Database.addQuery(monsterBuilder);
-
-		StringBuilder npcsBuilder = new StringBuilder();
-
-		Database.getNPCs().forEach((id, npc) -> {
-			npcsBuilder.append(npc.querify(npc.id));
+		getNPCs().forEach((id, npc) -> {
+			query.append(npc.querify(npc.id));
 		});
 
-		Database.addQuery(npcsBuilder);
+		StringBuilder skillLevelsStringBuilder = new StringBuilder();
+		for (Skill skill : getSkills().values()) {
+			query.append(skill.querify(skill.id));
 
-		StringBuilder skillsBuilder = new StringBuilder();
-		StringBuilder skillsLevelBuilder = new StringBuilder();
-
-		for (Skill skill : Database.getSkills().values()) {
-			skillsBuilder.append(skill.querify(skill.id));
-
-			skill.levels.forEach(level -> skillsLevelBuilder.append(level.querify(skill.id)));
+			skill.levels.forEach(level -> skillLevelsStringBuilder.append(level.querify(skill.id)));
 		}
 
-		Database.addQuery(skillsBuilder);
-		Database.addQuery(skillsLevelBuilder);
-	}
+		query.append(skillLevelsStringBuilder.toString());
 
-	public static void addQuery(StringBuilder builder) {
-		sqlQuery.append(builder.toString());
-	}
-
-	public static void printQuery() {
-		System.out.println(sqlQuery.toString());
+		return query.toString();
 	}
 
 	public static LinkedHashMap<Integer, Item> getItems() {
