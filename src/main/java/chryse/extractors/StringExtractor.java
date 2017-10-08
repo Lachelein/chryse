@@ -68,8 +68,8 @@ public class StringExtractor extends Extractor {
 		if (Utility.contains(path, nonEquips)) {
 			for (WzObject<?, ?> item : parent) {
 				int id = getId(item.getFullPath());
-				String desc = WzDataTool.getString(item, "desc", "None");
-				String name = WzDataTool.getString(item, "name", "None");
+				String desc = WzDataTool.getString(item, "desc", "");
+				String name = WzDataTool.getString(item, "name", "");
 
 			}
 		} else if (path.contains("Eqp")) {
@@ -77,7 +77,7 @@ public class StringExtractor extends Extractor {
 			for (WzObject<?, ?> category : equipCategories) {
 				for (WzObject<?, ?> item : category) {
 					int id = getId(item.getFullPath());
-					String name = WzDataTool.getString(item, "desc", "None");
+					String name = WzDataTool.getString(item, "desc", "");
 
 				}
 			}
@@ -85,22 +85,22 @@ public class StringExtractor extends Extractor {
 			for (WzObject<?, ?> mapCategory : parent) {
 				for (WzObject<?, ?> map : mapCategory) {
 					int id = getId(map.getFullPath());
-					String mapName = WzDataTool.getString(map, "mapName", "None");
-					String streetName = WzDataTool.getString(map, "streetName", "None");
+					String mapName = WzDataTool.getString(map, "mapName", "");
+					String streetName = WzDataTool.getString(map, "streetName", "");
 
 				}
 			}
 		} else if (path.contains("Mob")) {
 			for (WzObject<?, ?> mob : parent) {
 				int id = getId(mob.getFullPath());
-				String name = WzDataTool.getString(mob, "name", "None");
+				String name = WzDataTool.getString(mob, "name", "");
 
 			}
 		} else if (path.contains("Npc")) {
 			for (WzObject<?, ?> npc : parent) {
 				int id = getId(npc.getFullPath());
-				String func = WzDataTool.getString(npc, "func", "None");
-				String name = WzDataTool.getString(npc, "name", "None");
+				String func = WzDataTool.getString(npc, "func", "");
+				String name = WzDataTool.getString(npc, "name", "");
 
 			}
 		} else if (path.contains("Skill")) {
@@ -109,8 +109,8 @@ public class StringExtractor extends Extractor {
 			}
 			for (WzObject<?, ?> skill : parent) {
 				int id = getId(skill.getFullPath());
-				String desc = WzDataTool.getString(skill, "desc", "None");
-				String name = WzDataTool.getString(skill, "name", "None");
+				String desc = WzDataTool.getString(skill, "desc", "");
+				String name = WzDataTool.getString(skill, "name", "");
 				ArrayList<String> levels = new ArrayList<String>();
 
 				int level = 0;

@@ -69,12 +69,13 @@ public class MapExtractor extends Extractor {
 			WzProperty<?> image = (WzProperty<?>) miniMap.getChild("canvas");
 			extractImage(image, path);
 		}
+		WzObject<?, ?> info = parent.getChild("info");
+
+		String mapMark = WzDataTool.getString(info, "mapMark", "");
+		String bgm = WzDataTool.getString(info, "bgm", "");
+		int returnMap = WzDataTool.getInteger(info, "returnMap", -1);
 
 		int id = getId(path);
-		String mapMark = WzDataTool.getString(parent, "info/mapMark", "None");
-		String bgm = WzDataTool.getString(parent, "info/bgm", "None");
-		int returnMap = WzDataTool.getInteger(parent, "info/returnMap", -1);
-
 		Map map = Database.getMap(id);
 		map.mapMark = mapMark;
 		map.bgm = bgm;
@@ -115,7 +116,7 @@ public class MapExtractor extends Extractor {
 			int id = Integer.parseInt(WzDataTool.getString(child, "id", "0"));
 			int x = WzDataTool.getInteger(child, "x", -1);
 			int y = WzDataTool.getInteger(child, "y", -1);
-			String type = WzDataTool.getString(child, "type", "None");
+			String type = WzDataTool.getString(child, "type", "");
 
 			if (type.equals("n")) {
 				MapNPC npc = new MapNPC(id, x, y);

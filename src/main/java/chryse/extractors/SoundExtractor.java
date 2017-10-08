@@ -46,12 +46,12 @@ public class SoundExtractor extends Extractor {
 		System.out.println(path + " " + path.length());
 
 		for (WzObject<?, ?> child : parent) {
-			dumpMP3(child);
+			dumpBgm(child);
 		}
 
 	}
 
-	private void dumpMP3(WzObject<?, ?> sound) {
+	private void dumpBgm(WzObject<?, ?> sound) {
 		String path = sound.getFullPath();
 		extractSound((WzProperty<?>) sound, path);
 	}

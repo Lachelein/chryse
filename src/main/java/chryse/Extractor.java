@@ -93,10 +93,6 @@ public abstract class Extractor {
 			}
 		}
 
-		if (id == 0) {
-			new Exception("RETURNING 0 AS ID");
-		}
-
 		return id;
 	}
 

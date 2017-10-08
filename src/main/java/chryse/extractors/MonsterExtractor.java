@@ -42,25 +42,27 @@ public class MonsterExtractor extends Extractor {
 	@Override
 	public void parse(WzObject<?, ?> parent, String path) {
 
+		WzObject<?, ?> info = parent.getChild("info");
+
 		int id = getId(path);
 		Monster monster = Database.getMonster(id);
 
-		monster.acc = WzDataTool.getInteger(parent, "info/acc", -1);
-		monster.boss = WzDataTool.getInteger(parent, "info/boss", 0);
-		monster.bodyAttack = WzDataTool.getInteger(parent, "info/bodyAttack", -1);
-		monster.eva = WzDataTool.getInteger(parent, "info/eva", -1);
-		monster.exp = WzDataTool.getInteger(parent, "info/exp", -1);
-		monster.level = WzDataTool.getInteger(parent, "info/level", -1);
-		monster.MADamage = WzDataTool.getInteger(parent, "info/MADamage", -1);
-		monster.maxHP = WzDataTool.getInteger(parent, "info/maxHP", -1);
-		monster.maxMP = WzDataTool.getInteger(parent, "info/maxMP", -1);
-		monster.MDDamage = WzDataTool.getInteger(parent, "info/MDDamage", -1);
-		monster.mobType = WzDataTool.getInteger(parent, "info/mobType", -1);
-		monster.PADamage = WzDataTool.getInteger(parent, "info/PADamage", -1);
-		monster.PDDamage = WzDataTool.getInteger(parent, "info/PDDamage", -1);
-		monster.pushed = WzDataTool.getInteger(parent, "info/pushed", -1);
-		monster.speed = WzDataTool.getInteger(parent, "info/speed", -1);
-		monster.undead = WzDataTool.getInteger(parent, "info/undead", -1);
+		monster.acc = WzDataTool.getInteger(info, "acc", -1);
+		monster.boss = WzDataTool.getInteger(info, "boss", 0);
+		monster.bodyAttack = WzDataTool.getInteger(info, "bodyAttack", -1);
+		monster.eva = WzDataTool.getInteger(info, "eva", -1);
+		monster.exp = WzDataTool.getInteger(info, "exp", -1);
+		monster.level = WzDataTool.getInteger(info, "level", -1);
+		monster.MADamage = WzDataTool.getInteger(info, "MADamage", -1);
+		monster.maxHP = WzDataTool.getInteger(info, "maxHP", -1);
+		monster.maxMP = WzDataTool.getInteger(info, "maxMP", -1);
+		monster.MDDamage = WzDataTool.getInteger(info, "MDDamage", -1);
+		monster.mobType = WzDataTool.getInteger(info, "mobType", -1);
+		monster.PADamage = WzDataTool.getInteger(info, "PADamage", -1);
+		monster.PDDamage = WzDataTool.getInteger(info, "PDDamage", -1);
+		monster.pushed = WzDataTool.getInteger(info, "pushed", -1);
+		monster.speed = WzDataTool.getInteger(info, "speed", -1);
+		monster.undead = WzDataTool.getInteger(info, "undead", -1);
 
 		dumpImage(parent, path);
 	}

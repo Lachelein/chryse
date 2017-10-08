@@ -86,7 +86,6 @@ public class CharacterExtractor extends Extractor {
 
 		WzProperty<?> image = (WzProperty<?>) info.getChild("iconRaw");
 		extractImage(image, path);
-
 	}
 
 	@Override

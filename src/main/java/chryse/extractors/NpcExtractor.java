@@ -48,5 +48,6 @@ public class NpcExtractor extends Extractor {
 
 	@Override
 	protected void finishExtraction() {
+
 	}
 }
