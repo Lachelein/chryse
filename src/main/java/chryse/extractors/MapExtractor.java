@@ -25,8 +25,7 @@
 
 package chryse.extractors;
 
-import java.util.ArrayList;
-
+import chryse.Database;
 import chryse.Extractor;
 import chryse.Target;
 import chryse.Utility;
@@ -39,8 +38,6 @@ import wz.WzProperty;
 import wz.common.WzDataTool;
 
 public class MapExtractor extends Extractor {
-
-	public ArrayList<Map> maps = new ArrayList<Map>();
 
 	public MapExtractor(Target target) {
 		super(target, "Map");
@@ -80,12 +77,13 @@ public class MapExtractor extends Extractor {
 		String bgm = WzDataTool.getString(parent, "info/bgm", "None");
 		int returnMap = WzDataTool.getInteger(parent, "info/returnMap", -1);
 
-		Map map = new Map(id, mapMark, bgm, returnMap);
+		Map map = Database.getMap(id);
+		map.mapMark = mapMark;
+		map.bgm = bgm;
+		map.returnMap = returnMap;
 
 		addLife(parent, map);
 		addPortals(parent, map);
-
-		maps.add(map);
 	}
 
 	private void addPortals(WzObject<?, ?> parent, Map map) {
@@ -138,7 +136,7 @@ public class MapExtractor extends Extractor {
 		StringBuilder monstersBuilder = new StringBuilder();
 		StringBuilder portalBuilder = new StringBuilder();
 
-		for (Map map : maps) {
+		for (Map map : Database.getMaps().values()) {
 			mapBuilder.append(map.querify(0));
 
 			map.npcs.forEach(npc -> npcsBuilder.append(npc.querify(map.id)));

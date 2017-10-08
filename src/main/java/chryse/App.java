@@ -30,6 +30,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import chryse.extractors.CharacterExtractor;
+import chryse.extractors.ItemExtractor;
+import chryse.extractors.MapExtractor;
+import chryse.extractors.MonsterExtractor;
+import chryse.extractors.NpcExtractor;
+import chryse.extractors.ReactorExtractor;
+import chryse.extractors.SkillExtractor;
 import chryse.extractors.SoundExtractor;
 
 public class App {
@@ -40,13 +47,13 @@ public class App {
 		Target target = new Target(properties);
 
 		Extractor[] extractors = {
-				// new ItemExtractor(target)
-				// new NpcExtractor(target),
-				// new MapExtractor(target),
-				// new MonsterExtractor(target),
-				// new CharacterExtractor(target),
-				// new ReactorExtractor(target),
-				// new SkillExtractor(target),
+				new ItemExtractor(target),
+				new NpcExtractor(target),
+				new MapExtractor(target),
+				new MonsterExtractor(target),
+				new CharacterExtractor(target),
+				new ReactorExtractor(target),
+				new SkillExtractor(target),
 				new SoundExtractor(target)
 		};
 

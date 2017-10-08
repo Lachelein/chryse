@@ -40,6 +40,10 @@ public class Item extends Querifiable {
 	public int lv;
 	public int reqLevel;
 
+	public Item(int id) {
+		this.id = id;
+	}
+
 	@Override
 	public String getTableName() {
 		return "items";

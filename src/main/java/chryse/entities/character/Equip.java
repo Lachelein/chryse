@@ -51,6 +51,10 @@ public class Equip extends Querifiable {
 	public int reqSTR;
 	public int tuc;
 
+	public Equip(int id) {
+		this.id = id;
+	}
+
 	@Override
 	public String getTableName() {
 		return "character";

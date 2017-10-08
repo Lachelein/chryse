@@ -25,8 +25,7 @@
 
 package chryse.extractors;
 
-import java.util.ArrayList;
-
+import chryse.Database;
 import chryse.Extractor;
 import chryse.Target;
 import chryse.entities.monster.Monster;
@@ -36,8 +35,6 @@ import wz.common.WzDataTool;
 
 public class MonsterExtractor extends Extractor {
 
-	public ArrayList<Monster> monsters = new ArrayList<Monster>();
-
 	public MonsterExtractor(Target target) {
 		super(target, "Mob");
 	}
@@ -45,11 +42,11 @@ public class MonsterExtractor extends Extractor {
 	@Override
 	public void parse(WzObject<?, ?> parent, String path) {
 
-		Monster monster = new Monster();
+		int id = getId(path);
+		Monster monster = Database.getMonster(id);
 
 		System.out.println(parent.getFullPath());
 
-		monster.id = getId(path);
 		monster.acc = WzDataTool.getInteger(parent, "info/acc", -1);
 		monster.boss = WzDataTool.getInteger(parent, "info/boss", 0);
 		monster.bodyAttack = WzDataTool.getInteger(parent, "info/bodyAttack", -1);
@@ -67,8 +64,6 @@ public class MonsterExtractor extends Extractor {
 		monster.speed = WzDataTool.getInteger(parent, "info/speed", -1);
 		monster.undead = WzDataTool.getInteger(parent, "info/undead", -1);
 
-		monsters.add(monster);
-
 		dumpImage(parent, path);
 	}
 
@@ -83,7 +78,9 @@ public class MonsterExtractor extends Extractor {
 	protected void finishExtraction() {
 		StringBuilder monsterBuilder = new StringBuilder();
 
-		monsters.forEach(monster -> monsterBuilder.append(monster.querify(monster.id)));
+		Database.getMonsters().forEach((id, monster) -> {
+			monsterBuilder.append(monster.querify(monster.id));
+		});
 
 		System.out.println(monsterBuilder.toString());
 

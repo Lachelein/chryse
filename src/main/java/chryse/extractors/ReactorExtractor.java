@@ -32,8 +32,6 @@ import wz.WzProperty;
 
 public class ReactorExtractor extends Extractor {
 
-	public static int x = 0;
-
 	public ReactorExtractor(Target target) {
 		super(target, "Reactor");
 	}
@@ -48,11 +46,10 @@ public class ReactorExtractor extends Extractor {
 			extractImage(image, path);
 		}
 
-		x++;
 	}
 
 	@Override
 	protected void finishExtraction() {
-		System.out.println(x);
+
 	}
 }

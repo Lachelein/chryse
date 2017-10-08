@@ -49,6 +49,10 @@ public class Monster extends Querifiable {
 	public int speed;
 	public int undead;
 
+	public Monster(int id) {
+		this.id = id;
+	}
+
 	@Override
 	public String getTableName() {
 		return "monsters";

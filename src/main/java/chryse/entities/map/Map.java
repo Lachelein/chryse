@@ -16,11 +16,8 @@ public class Map extends Querifiable {
 	public ArrayList<MapMonster> monsters = new ArrayList<MapMonster>();
 	public ArrayList<MapPortal> portals = new ArrayList<MapPortal>();
 
-	public Map(int id, String mapMark, String bgm, int returnMap) {
+	public Map(int id) {
 		this.id = id;
-		this.mapMark = mapMark;
-		this.bgm = bgm;
-		this.returnMap = returnMap;
 	}
 
 	public void add(MapNPC npc) {

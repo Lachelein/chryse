@@ -25,8 +25,7 @@
 
 package chryse.extractors;
 
-import java.util.ArrayList;
-
+import chryse.Database;
 import chryse.Extractor;
 import chryse.Target;
 import chryse.Utility;
@@ -36,8 +35,6 @@ import wz.WzProperty;
 import wz.common.WzDataTool;
 
 public class CharacterExtractor extends Extractor {
-
-	public ArrayList<Equip> equips = new ArrayList<Equip>();
 
 	public CharacterExtractor(Target target) {
 		super(target, "Character");
@@ -65,8 +62,9 @@ public class CharacterExtractor extends Extractor {
 			return;
 		}
 
-		Equip equip = new Equip();
-		equip.id = getId(path);
+		int id = getId(path);
+		Equip equip = Database.getEquip(id);
+
 		equip.incMDD = WzDataTool.getInteger(info, "incMDD", -1);
 		equip.incPDD = WzDataTool.getInteger(info, "incPDD", -1);
 		equip.incMAD = WzDataTool.getInteger(info, "incMAD", -1);
@@ -86,8 +84,6 @@ public class CharacterExtractor extends Extractor {
 		equip.reqSTR = WzDataTool.getInteger(info, "reqSTR", -1);
 		equip.tuc = WzDataTool.getInteger(info, "tuc", -1);
 
-		equips.add(equip);
-
 		WzProperty<?> image = (WzProperty<?>) info.getChild("iconRaw");
 		extractImage(image, path);
 
@@ -97,7 +93,9 @@ public class CharacterExtractor extends Extractor {
 	protected void finishExtraction() {
 		StringBuilder characterBuilder = new StringBuilder();
 
-		equips.forEach(equip -> characterBuilder.append(equip.querify(0)));
+		Database.getEquips().forEach((id, equip) -> {
+			characterBuilder.append(equip.querify(equip.id));
+		});
 
 		System.out.println(characterBuilder.toString());
 	}

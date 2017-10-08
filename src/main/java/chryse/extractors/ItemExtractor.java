@@ -25,8 +25,7 @@
 
 package chryse.extractors;
 
-import java.util.ArrayList;
-
+import chryse.Database;
 import chryse.Extractor;
 import chryse.Target;
 import chryse.entities.item.Item;
@@ -35,8 +34,6 @@ import wz.WzProperty;
 import wz.common.WzDataTool;
 
 public class ItemExtractor extends Extractor {
-
-	public ArrayList<Item> items = new ArrayList<Item>();
 
 	public ItemExtractor(Target target) {
 		super(target, "Item");
@@ -50,18 +47,16 @@ public class ItemExtractor extends Extractor {
 		}
 
 		if (path.contains("Pet")) {
-			Item item = new Item();
-			item.id = getId(path);
+			int id = getId(path);
+			Item item = Database.getItem(id);
 
 			parsePet(item, parent);
 			dumpIcon(parent, "stand0/0");
 
-			items.add(item);
-
 		} else {
 			for (WzObject<?, ?> child : parent) {
-				Item item = new Item();
-				item.id = getId(child.getFullPath());
+				int id = getId(child.getFullPath());
+				Item item = Database.getItem(id);
 
 				if (item.id >= 2000000 && item.id < 3000000) {
 					parseConsumable(item, child);
@@ -73,7 +68,6 @@ public class ItemExtractor extends Extractor {
 					parseCashItem(item, child);
 				}
 				dumpIcon(child, "info/icon");
-				items.add(item);
 
 			}
 		}
@@ -112,14 +106,16 @@ public class ItemExtractor extends Extractor {
 		System.out.println(path + " id: " + id);
 
 		WzProperty<?> image = (WzProperty<?>) item.getChildByPath(imagePath);
-		// extractImage(image, path);
+		extractImage(image, path);
 	}
 
 	@Override
 	protected void finishExtraction() {
 		StringBuilder itemBuilder = new StringBuilder();
 
-		items.forEach(item -> itemBuilder.append(item.querify(item.id)));
+		Database.getItems().forEach((id, item) -> {
+			itemBuilder.append(item.querify(item.id));
+		});
 
 		System.out.println(itemBuilder.toString());
 	}
