@@ -103,10 +103,10 @@ public class Utility {
 				file.getParentFile().mkdirs();
 			}
 
-			FileOutputStream fileOutputStream = new FileOutputStream(file);
-			fileOutputStream.write(song.getHeader());
-			fileOutputStream.write(song.getData());
-			fileOutputStream.close();
+			try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+				fileOutputStream.write(song.getHeader());
+				fileOutputStream.write(song.getData());
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
