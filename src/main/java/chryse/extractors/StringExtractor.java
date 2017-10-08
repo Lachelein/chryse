@@ -25,11 +25,17 @@
 
 package chryse.extractors;
 
-import java.util.ArrayList;
-
+import chryse.Database;
 import chryse.Extractor;
 import chryse.Target;
 import chryse.Utility;
+import chryse.entities.character.Equip;
+import chryse.entities.item.Item;
+import chryse.entities.map.Map;
+import chryse.entities.monster.Monster;
+import chryse.entities.npc.NPC;
+import chryse.entities.skill.Skill;
+import chryse.entities.skill.SkillLevel;
 import wz.WzObject;
 import wz.common.WzDataTool;
 
@@ -66,74 +72,84 @@ public class StringExtractor extends Extractor {
 		};
 
 		if (Utility.contains(path, nonEquips)) {
-			for (WzObject<?, ?> item : parent) {
-				int id = getId(item.getFullPath());
-				String desc = WzDataTool.getString(item, "desc", "");
-				String name = WzDataTool.getString(item, "name", "");
+			if (path.contains("Etc")) {
+				parent = parent.getChild("Etc");
+			}
+			for (WzObject<?, ?> itemObj : parent) {
+				int id = getId(itemObj.getFullPath());
+				Item item = Database.getItem(id);
 
+				item.name = WzDataTool.getString(itemObj, "name", "");
+				item.desc = WzDataTool.getString(itemObj, "desc", "");
 			}
 		} else if (path.contains("Eqp")) {
 			WzObject<?, ?> equipCategories = parent.getChild("Eqp");
 			for (WzObject<?, ?> category : equipCategories) {
-				for (WzObject<?, ?> item : category) {
-					int id = getId(item.getFullPath());
-					String name = WzDataTool.getString(item, "desc", "");
+				for (WzObject<?, ?> itemObj : category) {
+					int id = getId(itemObj.getFullPath());
+					Equip equip = Database.getEquip(id);
 
+					equip.name = WzDataTool.getString(itemObj, "name", "");
 				}
 			}
 		} else if (path.contains("Map")) {
 			for (WzObject<?, ?> mapCategory : parent) {
-				for (WzObject<?, ?> map : mapCategory) {
-					int id = getId(map.getFullPath());
-					String mapName = WzDataTool.getString(map, "mapName", "");
-					String streetName = WzDataTool.getString(map, "streetName", "");
+				for (WzObject<?, ?> mapObj : mapCategory) {
+					int id = getId(mapObj.getFullPath());
+					Map map = Database.getMap(id);
 
+					map.mapName = WzDataTool.getString(mapObj, "mapName", "");
+					map.streetName = WzDataTool.getString(mapObj, "streetName", "");
 				}
 			}
 		} else if (path.contains("Mob")) {
 			for (WzObject<?, ?> mob : parent) {
 				int id = getId(mob.getFullPath());
-				String name = WzDataTool.getString(mob, "name", "");
+				Monster monster = Database.getMonster(id);
 
+				monster.name = WzDataTool.getString(mob, "name", "");
 			}
 		} else if (path.contains("Npc")) {
-			for (WzObject<?, ?> npc : parent) {
-				int id = getId(npc.getFullPath());
-				String func = WzDataTool.getString(npc, "func", "");
-				String name = WzDataTool.getString(npc, "name", "");
+			for (WzObject<?, ?> npcObj : parent) {
+				int id = getId(npcObj.getFullPath());
+				NPC npc = Database.getNPC(id);
 
+				npc.name = WzDataTool.getString(npcObj, "name", "");
+				npc.func = WzDataTool.getString(npcObj, "func", "");
 			}
 		} else if (path.contains("Skill")) {
-			if (path.length() < 7) {
-				return;
-			}
-			for (WzObject<?, ?> skill : parent) {
-				int id = getId(skill.getFullPath());
-				String desc = WzDataTool.getString(skill, "desc", "");
-				String name = WzDataTool.getString(skill, "name", "");
-				ArrayList<String> levels = new ArrayList<String>();
+			for (WzObject<?, ?> skillObj : parent) {
+				WzObject<?, ?> bookName = skillObj.getChild("bookName");
 
-				int level = 0;
+				if (bookName != null) {
+					System.out.println("Skipping: " + skillObj.getFullPath());
+					continue;
+				}
+
+				int id = getId(skillObj.getFullPath());
+				Skill skill = Database.getSkill(id);
+
+				skill.name = WzDataTool.getString(skillObj, "name", "");
+				skill.desc = WzDataTool.getString(skillObj, "desc", "");
+
+				int level = 1;
 
 				while (true) {
-					WzObject<?, ?> levelObj = skill.getChild("h" + level);
+					WzObject<?, ?> levelObj = skillObj.getChild("h" + level);
 
 					if (levelObj == null) {
 						break;
 					}
 
-					String levelDescription = WzDataTool.getString(levelObj, "h" + level, "None");
-					levels.add(levelDescription);
+					SkillLevel skillLevel = new SkillLevel();
+					skillLevel.level = level;
+					skillLevel.desc = WzDataTool.getString(skillObj, "h" + level, "");
+
+					skill.add(skillLevel);
 
 					level++;
 				}
 			}
 		}
-
-	}
-
-	@Override
-	protected void finishExtraction() {
-
 	}
 }

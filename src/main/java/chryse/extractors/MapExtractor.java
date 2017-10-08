@@ -71,15 +71,12 @@ public class MapExtractor extends Extractor {
 		}
 		WzObject<?, ?> info = parent.getChild("info");
 
-		String mapMark = WzDataTool.getString(info, "mapMark", "");
-		String bgm = WzDataTool.getString(info, "bgm", "");
-		int returnMap = WzDataTool.getInteger(info, "returnMap", -1);
-
 		int id = getId(path);
 		Map map = Database.getMap(id);
-		map.mapMark = mapMark;
-		map.bgm = bgm;
-		map.returnMap = returnMap;
+
+		map.mapMark = WzDataTool.getString(info, "mapMark", "");
+		map.bgm = WzDataTool.getString(info, "bgm", "");
+		map.returnMap = WzDataTool.getInteger(info, "returnMap", -1);
 
 		addLife(parent, map);
 		addPortals(parent, map);
@@ -94,12 +91,10 @@ public class MapExtractor extends Extractor {
 
 		for (WzObject<?, ?> child : portals) {
 			int destination = WzDataTool.getInteger(child, "tm", -1);
-			int x = WzDataTool.getInteger(child, "x", -1);
-			int y = WzDataTool.getInteger(child, "y", -1);
 
 			MapPortal portal = new MapPortal(destination);
-			portal.x = x;
-			portal.y = y;
+			portal.x = WzDataTool.getInteger(child, "x", -1);
+			portal.y = WzDataTool.getInteger(child, "y", -1);
 
 			map.add(portal);
 		}
@@ -127,26 +122,4 @@ public class MapExtractor extends Extractor {
 			}
 		}
 	}
-
-	@Override
-	protected void finishExtraction() {
-		StringBuilder mapBuilder = new StringBuilder();
-		StringBuilder npcsBuilder = new StringBuilder();
-		StringBuilder monstersBuilder = new StringBuilder();
-		StringBuilder portalBuilder = new StringBuilder();
-
-		for (Map map : Database.getMaps().values()) {
-			mapBuilder.append(map.querify(0));
-
-			map.npcs.forEach(npc -> npcsBuilder.append(npc.querify(map.id)));
-			map.monsters.forEach(monster -> monstersBuilder.append(monster.querify(map.id)));
-			map.portals.forEach(portal -> portalBuilder.append(portal.querify(map.id)));
-		}
-
-		Database.addQuery(mapBuilder);
-		Database.addQuery(npcsBuilder);
-		Database.addQuery(monstersBuilder);
-		Database.addQuery(portalBuilder);
-	}
-
 }

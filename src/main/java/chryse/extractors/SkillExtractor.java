@@ -55,9 +55,4 @@ public class SkillExtractor extends Extractor {
 		WzProperty<?> image = (WzProperty<?>) skill.getChildByPath(imagePath);
 		extractImage(image, path);
 	}
-
-	@Override
-	protected void finishExtraction() {
-
-	}
 }

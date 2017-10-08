@@ -73,7 +73,7 @@ public class ItemExtractor extends Extractor {
 			} else if (item.id >= 4000000 && item.id < 5000000) {
 				parseEtc(item, info);
 			} else if (item.id >= 5000000 && item.id < 6000000) {
-				// cash items
+				// cash items, nothing to do for these
 			}
 
 			dumpIcon(info, "icon");
@@ -110,16 +110,5 @@ public class ItemExtractor extends Extractor {
 		String path = item.getFullPath();
 		WzProperty<?> image = (WzProperty<?>) item.getChildByPath(imagePath);
 		extractImage(image, path);
-	}
-
-	@Override
-	protected void finishExtraction() {
-		StringBuilder itemBuilder = new StringBuilder();
-
-		Database.getItems().forEach((id, item) -> {
-			itemBuilder.append(item.querify(item.id));
-		});
-
-		Database.addQuery(itemBuilder);
 	}
 }

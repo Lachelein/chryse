@@ -46,6 +46,10 @@ public abstract class Querifiable {
 		query.append(") VALUES (");
 
 		for (Map.Entry<String, Object> entry : parameters.entrySet()) {
+			if (entry == null || entry.getValue() == null) {
+				query.append(", ");
+				continue;
+			}
 			query.append(entry.getValue().toString() + ", ");
 		}
 		query.setLength(query.length() - 2);

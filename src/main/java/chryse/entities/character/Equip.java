@@ -32,6 +32,7 @@ import chryse.Querifiable;
 public class Equip extends Querifiable {
 
 	public int id;
+	public String name;
 	public int incMDD;
 	public int incPDD;
 	public int incMAD;
@@ -64,6 +65,7 @@ public class Equip extends Querifiable {
 	public LinkedHashMap<String, Object> getQueryParameters(int relationshipKey) {
 		LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
 		parameters.put("id", id);
+		parameters.put("name", name);
 		parameters.put("incMDD", incMDD);
 		parameters.put("incPDD", incPDD);
 		parameters.put("incMAD", incMAD);

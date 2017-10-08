@@ -87,16 +87,4 @@ public class CharacterExtractor extends Extractor {
 		WzProperty<?> image = (WzProperty<?>) info.getChild("iconRaw");
 		extractImage(image, path);
 	}
-
-	@Override
-	protected void finishExtraction() {
-		StringBuilder characterBuilder = new StringBuilder();
-
-		Database.getEquips().forEach((id, equip) -> {
-			characterBuilder.append(equip.querify(equip.id));
-		});
-
-		Database.addQuery(characterBuilder);
-	}
-
 }

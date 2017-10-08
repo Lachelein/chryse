@@ -38,6 +38,7 @@ import chryse.extractors.NpcExtractor;
 import chryse.extractors.ReactorExtractor;
 import chryse.extractors.SkillExtractor;
 import chryse.extractors.SoundExtractor;
+import chryse.extractors.StringExtractor;
 
 public class App {
 
@@ -55,7 +56,9 @@ public class App {
 				new CharacterExtractor(target),
 				new ReactorExtractor(target),
 				new SkillExtractor(target),
-				new SoundExtractor(target)
+				new SoundExtractor(target),
+				new StringExtractor(target)
+
 		};
 
 		// Quest.wz
@@ -65,6 +68,7 @@ public class App {
 			extractor.extract();
 		}
 
+		Database.buildQuery();
 		Database.printQuery();
 
 		long seconds = (System.nanoTime() - startTime) / 1000000000;

@@ -32,6 +32,7 @@ import chryse.Querifiable;
 public class Monster extends Querifiable {
 
 	public int id;
+	public String name;
 	public int acc;
 	public int boss;
 	public int bodyAttack;
@@ -62,6 +63,7 @@ public class Monster extends Querifiable {
 	public LinkedHashMap<String, Object> getQueryParameters(int relationshipKey) {
 		LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
 		parameters.put("id", id);
+		parameters.put("name", name);
 		parameters.put("acc", acc);
 		parameters.put("boss", boss);
 		parameters.put("bodyAttack", bodyAttack);

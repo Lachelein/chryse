@@ -23,26 +23,28 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chryse.extractors;
+package chryse.entities.skill;
 
-import chryse.Extractor;
-import chryse.Target;
-import wz.WzObject;
-import wz.WzProperty;
+import java.util.LinkedHashMap;
 
-public class NpcExtractor extends Extractor {
+import chryse.Querifiable;
 
-	public NpcExtractor(Target target) {
-		super(target, "Npc");
+public class SkillLevel extends Querifiable {
+
+	public int level;
+	public String desc;
+
+	@Override
+	public String getTableName() {
+		return "skill_levels";
 	}
 
 	@Override
-	public void parse(WzObject<?, ?> parent, String path) {
-
-		WzObject<?, ?> stand = parent.getChild("stand");
-		if (stand != null) {
-			WzProperty<?> image = (WzProperty<?>) stand.getChild("0");
-			extractImage(image, path);
-		}
+	public LinkedHashMap<String, Object> getQueryParameters(int relationshipKey) {
+		LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
+		parameters.put("skill_id", relationshipKey);
+		parameters.put("level", level);
+		parameters.put("desc", desc);
+		return parameters;
 	}
 }

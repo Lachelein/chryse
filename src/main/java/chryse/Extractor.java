@@ -51,7 +51,6 @@ public abstract class Extractor {
 	protected void extract() {
 		WzObject<?, ?> root = wzFile.getRoot();
 		internalExtract(root);
-		finishExtraction();
 	}
 
 	private void internalExtract(WzObject<?, ?> root) {
@@ -106,7 +105,5 @@ public abstract class Extractor {
 	}
 
 	protected abstract void parse(WzObject<?, ?> parent, String path);
-
-	protected abstract void finishExtraction();
 
 }

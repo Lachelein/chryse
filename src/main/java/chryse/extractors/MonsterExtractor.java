@@ -73,16 +73,4 @@ public class MonsterExtractor extends Extractor {
 			extractImage(stand, path);
 		}
 	}
-
-	@Override
-	protected void finishExtraction() {
-		StringBuilder monsterBuilder = new StringBuilder();
-
-		Database.getMonsters().forEach((id, monster) -> {
-			monsterBuilder.append(monster.querify(monster.id));
-		});
-
-		Database.addQuery(monsterBuilder);
-	}
-
 }

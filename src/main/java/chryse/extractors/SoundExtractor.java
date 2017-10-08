@@ -55,9 +55,4 @@ public class SoundExtractor extends Extractor {
 		String path = sound.getFullPath();
 		extractSound((WzProperty<?>) sound, path);
 	}
-
-	@Override
-	protected void finishExtraction() {
-
-	}
 }

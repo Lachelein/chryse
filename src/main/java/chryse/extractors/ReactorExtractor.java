@@ -45,9 +45,4 @@ public class ReactorExtractor extends Extractor {
 			extractImage(image, path);
 		}
 	}
-
-	@Override
-	protected void finishExtraction() {
-
-	}
 }
