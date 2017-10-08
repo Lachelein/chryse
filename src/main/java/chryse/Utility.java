@@ -46,7 +46,7 @@ public class Utility {
 			Image image = value.getImage(false);
 
 			if (image.getWidth(null) <= 4 || image.getHeight(null) <= 4) {
-				System.out.println("Skipping " + out);
+				// System.out.println("Skipping " + out);
 				return;
 			}
 

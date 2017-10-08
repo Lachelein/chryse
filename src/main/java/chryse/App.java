@@ -42,8 +42,9 @@ import chryse.extractors.SoundExtractor;
 public class App {
 
 	public static void main(String[] args) {
-		Properties properties = loadProperties();
+		long startTime = System.nanoTime();
 
+		Properties properties = loadProperties();
 		Target target = new Target(properties);
 
 		Extractor[] extractors = {
@@ -64,7 +65,10 @@ public class App {
 			extractor.extract();
 		}
 
-		System.out.println("All files extracted successfully.");
+		Database.printQuery();
+
+		long seconds = (System.nanoTime() - startTime) / 1000000000;
+		System.out.println("All files extracted in " + seconds + " seconds.");
 	}
 
 	public static Properties loadProperties() {

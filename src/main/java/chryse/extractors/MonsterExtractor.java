@@ -45,8 +45,6 @@ public class MonsterExtractor extends Extractor {
 		int id = getId(path);
 		Monster monster = Database.getMonster(id);
 
-		System.out.println(parent.getFullPath());
-
 		monster.acc = WzDataTool.getInteger(parent, "info/acc", -1);
 		monster.boss = WzDataTool.getInteger(parent, "info/boss", 0);
 		monster.bodyAttack = WzDataTool.getInteger(parent, "info/bodyAttack", -1);
@@ -82,8 +80,7 @@ public class MonsterExtractor extends Extractor {
 			monsterBuilder.append(monster.querify(monster.id));
 		});
 
-		System.out.println(monsterBuilder.toString());
-
+		Database.addQuery(monsterBuilder);
 	}
 
 }

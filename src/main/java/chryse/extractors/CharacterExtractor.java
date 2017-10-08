@@ -97,7 +97,7 @@ public class CharacterExtractor extends Extractor {
 			characterBuilder.append(equip.querify(equip.id));
 		});
 
-		System.out.println(characterBuilder.toString());
+		Database.addQuery(characterBuilder);
 	}
 
 }

@@ -14,6 +14,16 @@ public class Database {
 	private static LinkedHashMap<Integer, Map> maps = new LinkedHashMap<Integer, Map>();
 	private static LinkedHashMap<Integer, Monster> monsters = new LinkedHashMap<Integer, Monster>();
 
+	private static StringBuilder sqlQuery = new StringBuilder();
+
+	public static void addQuery(StringBuilder builder) {
+		sqlQuery.append(builder.toString());
+	}
+
+	public static void printQuery() {
+		System.out.println(sqlQuery.toString());
+	}
+
 	public static LinkedHashMap<Integer, Item> getItems() {
 		return items;
 	}

@@ -38,14 +38,12 @@ public class ReactorExtractor extends Extractor {
 
 	@Override
 	public void parse(WzObject<?, ?> parent, String path) {
-		System.out.println(path);
 
 		WzObject<?, ?> zero = parent.getChild("0");
 		if (zero != null) {
 			WzProperty<?> image = (WzProperty<?>) zero.getChild("0");
 			extractImage(image, path);
 		}
-
 	}
 
 	@Override

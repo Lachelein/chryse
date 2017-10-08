@@ -102,9 +102,6 @@ public class ItemExtractor extends Extractor {
 
 	private void dumpIcon(WzObject<?, ?> item, String imagePath) {
 		String path = item.getFullPath();
-		int id = getId(path);
-		System.out.println(path + " id: " + id);
-
 		WzProperty<?> image = (WzProperty<?>) item.getChildByPath(imagePath);
 		extractImage(image, path);
 	}
@@ -117,6 +114,6 @@ public class ItemExtractor extends Extractor {
 			itemBuilder.append(item.querify(item.id));
 		});
 
-		System.out.println(itemBuilder.toString());
+		Database.addQuery(itemBuilder);
 	}
 }

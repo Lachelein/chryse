@@ -38,7 +38,6 @@ public class NpcExtractor extends Extractor {
 
 	@Override
 	public void parse(WzObject<?, ?> parent, String path) {
-		System.out.println(path);
 
 		WzObject<?, ?> stand = parent.getChild("stand");
 		if (stand != null) {

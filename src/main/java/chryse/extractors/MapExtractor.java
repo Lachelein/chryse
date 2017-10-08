@@ -64,8 +64,6 @@ public class MapExtractor extends Extractor {
 			return;
 		}
 
-		System.out.println(path);
-
 		WzObject<?, ?> miniMap = parent.getChild("miniMap");
 		if (miniMap != null) {
 			WzProperty<?> image = (WzProperty<?>) miniMap.getChild("canvas");
@@ -144,11 +142,10 @@ public class MapExtractor extends Extractor {
 			map.portals.forEach(portal -> portalBuilder.append(portal.querify(map.id)));
 		}
 
-		System.out.println(mapBuilder.toString());
-		System.out.println(npcsBuilder.toString());
-		System.out.println(monstersBuilder.toString());
-		System.out.println(portalBuilder.toString());
-
+		Database.addQuery(mapBuilder);
+		Database.addQuery(npcsBuilder);
+		Database.addQuery(monstersBuilder);
+		Database.addQuery(portalBuilder);
 	}
 
 }

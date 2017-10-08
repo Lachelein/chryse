@@ -31,7 +31,6 @@ import chryse.Extractor;
 import chryse.Target;
 import chryse.Utility;
 import wz.WzObject;
-import wz.WzProperty;
 import wz.common.WzDataTool;
 
 public class StringExtractor extends Extractor {
@@ -131,13 +130,6 @@ public class StringExtractor extends Extractor {
 			}
 		}
 
-	}
-
-	private void dumpIcon(WzObject<?, ?> skill, String imagePath) {
-		String path = skill.getFullPath();
-
-		WzProperty<?> image = (WzProperty<?>) skill.getChildByPath(imagePath);
-		extractImage(image, path);
 	}
 
 	@Override
