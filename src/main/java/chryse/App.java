@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import chryse.extractors.CharacterExtractor;
+import chryse.extractors.ReactorExtractor;
 
 public class App {
 
@@ -43,9 +43,16 @@ public class App {
 				// new ItemExtractor(target)
 				// new NpcExtractor(target),
 				// new MapExtractor(target),
-				// new MonsterExtractor(target)
-				new CharacterExtractor(target)
+				// new MonsterExtractor(target),
+				// new CharacterExtractor(target),
+				new ReactorExtractor(target)
 		};
+
+		// Quest.wz
+		// Skill.wz
+		// Sound.wz
+		// String.wz
+		// TamingMob.wz
 
 		for (Extractor extractor : extractors) {
 			extractor.extract();

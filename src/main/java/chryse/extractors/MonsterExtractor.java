@@ -74,8 +74,9 @@ public class MonsterExtractor extends Extractor {
 
 	private void dumpImage(WzObject<?, ?> parent, String path) {
 		WzProperty<?> stand = (WzProperty<?>) parent.getChildByPath("stand/0");
-		System.out.println(stand.getFullPath());
-		extractImage(stand, path);
+		if (stand != null) {
+			extractImage(stand, path);
+		}
 	}
 
 	@Override

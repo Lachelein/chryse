@@ -23,39 +23,36 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chryse.entities.item;
+package chryse.extractors;
 
-import java.util.LinkedHashMap;
+import chryse.Extractor;
+import chryse.Target;
+import wz.WzObject;
+import wz.WzProperty;
 
-import chryse.Querifiable;
+public class ReactorExtractor extends Extractor {
 
-public class Item extends Querifiable {
+	public static int x = 0;
 
-	public int id;
-	public int price;
-	public int hungry;
-	public int life;
-	public int slotMax;
-	public int time;
-	public int lv;
-	public int reqLevel;
-
-	@Override
-	public String getTableName() {
-		return "items";
+	public ReactorExtractor(Target target) {
+		super(target, "Reactor");
 	}
 
 	@Override
-	public LinkedHashMap<String, Object> getQueryParameters(int relationshipKey) {
-		LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
-		parameters.put("id", id);
-		parameters.put("price", price);
-		parameters.put("hungry", hungry);
-		parameters.put("return_map", life);
-		parameters.put("slotMax", slotMax);
-		parameters.put("time", time);
-		parameters.put("lv", lv);
-		parameters.put("reqLevel", reqLevel);
-		return parameters;
+	public void parse(WzObject<?, ?> parent, String path) {
+		System.out.println(path);
+
+		WzObject<?, ?> zero = parent.getChild("0");
+		if (zero != null) {
+			WzProperty<?> image = (WzProperty<?>) zero.getChild("0");
+			extractImage(image, path);
+		}
+
+		x++;
+	}
+
+	@Override
+	protected void finishExtraction() {
+		System.out.println(x);
 	}
 }
