@@ -23,58 +23,41 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chryse;
+package chryse.extractors;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import chryse.Extractor;
+import chryse.Target;
+import wz.WzObject;
+import wz.WzProperty;
 
-import chryse.extractors.SoundExtractor;
+public class SoundExtractor extends Extractor {
 
-public class App {
-
-	public static void main(String[] args) {
-		Properties properties = loadProperties();
-
-		Target target = new Target(properties);
-
-		Extractor[] extractors = {
-				// new ItemExtractor(target)
-				// new NpcExtractor(target),
-				// new MapExtractor(target),
-				// new MonsterExtractor(target),
-				// new CharacterExtractor(target),
-				// new ReactorExtractor(target),
-				// new SkillExtractor(target),
-				new SoundExtractor(target)
-		};
-
-		// Quest.wz
-		// String.wz
-
-		for (Extractor extractor : extractors) {
-			extractor.extract();
-		}
-
-		System.out.println("All files extracted successfully.");
+	public SoundExtractor(Target target) {
+		super(target, "Sound");
 	}
 
-	public static Properties loadProperties() {
-		Properties properties = new Properties();
-		InputStream input = null;
-		try {
-			input = new FileInputStream("config.properties");
-			properties.load(input);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			try {
-				input.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+	@Override
+	public void parse(WzObject<?, ?> parent, String path) {
+
+		if (!path.contains("Bgm")) {
+			return;
 		}
-		return properties;
+
+		System.out.println(path + " " + path.length());
+
+		for (WzObject<?, ?> child : parent) {
+			dumpMP3(child);
+		}
+
+	}
+
+	private void dumpMP3(WzObject<?, ?> sound) {
+		String path = sound.getFullPath();
+		extractSound((WzProperty<?>) sound, path);
+	}
+
+	@Override
+	protected void finishExtraction() {
+
 	}
 }

@@ -109,6 +109,10 @@ public abstract class Extractor {
 		Utility.extractImage(icon, wz, out);
 	}
 
+	protected void extractSound(WzProperty<?> song, String name) {
+		Utility.extractSound(song, name);
+	}
+
 	protected abstract void parse(WzObject<?, ?> parent, String path);
 
 	protected abstract void finishExtraction();

@@ -23,58 +23,41 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chryse;
+package chryse.extractors;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import chryse.Extractor;
+import chryse.Target;
+import wz.WzObject;
+import wz.WzProperty;
 
-import chryse.extractors.SoundExtractor;
+public class SkillExtractor extends Extractor {
 
-public class App {
-
-	public static void main(String[] args) {
-		Properties properties = loadProperties();
-
-		Target target = new Target(properties);
-
-		Extractor[] extractors = {
-				// new ItemExtractor(target)
-				// new NpcExtractor(target),
-				// new MapExtractor(target),
-				// new MonsterExtractor(target),
-				// new CharacterExtractor(target),
-				// new ReactorExtractor(target),
-				// new SkillExtractor(target),
-				new SoundExtractor(target)
-		};
-
-		// Quest.wz
-		// String.wz
-
-		for (Extractor extractor : extractors) {
-			extractor.extract();
-		}
-
-		System.out.println("All files extracted successfully.");
+	public SkillExtractor(Target target) {
+		super(target, "Skill");
 	}
 
-	public static Properties loadProperties() {
-		Properties properties = new Properties();
-		InputStream input = null;
-		try {
-			input = new FileInputStream("config.properties");
-			properties.load(input);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			try {
-				input.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+	@Override
+	public void parse(WzObject<?, ?> parent, String path) {
+
+		if (path.length() > 20) {
+			return;
 		}
-		return properties;
+
+		WzObject<?, ?> skills = parent.getChild("skill");
+		for (WzObject<?, ?> child : skills) {
+			dumpIcon(child, "icon");
+		}
+	}
+
+	private void dumpIcon(WzObject<?, ?> skill, String imagePath) {
+		String path = skill.getFullPath();
+
+		WzProperty<?> image = (WzProperty<?>) skill.getChildByPath(imagePath);
+		extractImage(image, path);
+	}
+
+	@Override
+	protected void finishExtraction() {
+
 	}
 }

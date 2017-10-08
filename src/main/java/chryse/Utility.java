@@ -81,4 +81,27 @@ public class Utility {
 		}
 		return false;
 	}
+
+	public static void extractSound(WzProperty<?> song, String name) {
+		// fully implement
+
+		if (true) {
+			return;
+		}
+
+		try {
+			File file = new File("dump/Sound/" + name + ".mp3");
+
+			if (file.exists()) {
+				file.delete();
+			} else {
+				file.mkdirs();
+				file.createNewFile();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 }
