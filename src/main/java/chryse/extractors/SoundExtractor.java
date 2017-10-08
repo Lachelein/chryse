@@ -52,7 +52,13 @@ public class SoundExtractor extends Extractor {
 	}
 
 	private void dumpBgm(WzObject<?, ?> sound) {
-		String path = sound.getFullPath();
-		extractSound((WzProperty<?>) sound, path);
+		String name = sound.getName();
+
+		if (name.length() == 0) {
+			return;
+		}
+
+		System.out.println(name);
+		extractSound((WzProperty<?>) sound, name);
 	}
 }

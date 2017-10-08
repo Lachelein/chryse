@@ -28,10 +28,12 @@ package chryse;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 
 import javax.imageio.ImageIO;
 
 import wz.WzProperty;
+import wz.common.MP3;
 import wz.common.PNG;
 
 public class Utility {
@@ -51,6 +53,14 @@ public class Utility {
 			}
 
 			Utility.exportImage(wz, out, image);
+		}
+	}
+
+	public static void extractMP3(WzProperty<?> property, String name) {
+		if (property.getValue() instanceof MP3) {
+			MP3 value = (MP3) property.getValue();
+
+			Utility.extractSound(value, name);
 		}
 	}
 
@@ -82,12 +92,7 @@ public class Utility {
 		return false;
 	}
 
-	public static void extractSound(WzProperty<?> song, String name) {
-		// fully implement
-
-		if (true) {
-			return;
-		}
+	public static void extractSound(MP3 song, String name) {
 
 		try {
 			File file = new File("dump/Sound/" + name + ".mp3");
@@ -95,9 +100,13 @@ public class Utility {
 			if (file.exists()) {
 				file.delete();
 			} else {
-				file.mkdirs();
-				file.createNewFile();
+				file.getParentFile().mkdirs();
 			}
+
+			FileOutputStream fileOutputStream = new FileOutputStream(file);
+			fileOutputStream.write(song.getHeader());
+			fileOutputStream.write(song.getData());
+			fileOutputStream.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();

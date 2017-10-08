@@ -101,7 +101,7 @@ public abstract class Extractor {
 	}
 
 	protected void extractSound(WzProperty<?> song, String name) {
-		Utility.extractSound(song, name);
+		Utility.extractMP3(song, name);
 	}
 
 	protected abstract void parse(WzObject<?, ?> parent, String path);
