@@ -57,7 +57,6 @@ public class MonsterExtractor extends Extractor {
 		monster.maxHP = WzDataTool.getInteger(info, "maxHP", -1);
 		monster.maxMP = WzDataTool.getInteger(info, "maxMP", -1);
 		monster.MDDamage = WzDataTool.getInteger(info, "MDDamage", -1);
-		monster.mobType = WzDataTool.getInteger(info, "mobType", -1);
 		monster.PADamage = WzDataTool.getInteger(info, "PADamage", -1);
 		monster.PDDamage = WzDataTool.getInteger(info, "PDDamage", -1);
 		monster.pushed = WzDataTool.getInteger(info, "pushed", -1);

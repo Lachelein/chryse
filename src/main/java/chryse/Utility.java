@@ -28,7 +28,9 @@ package chryse;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.PrintWriter;
 
 import javax.imageio.ImageIO;
 
@@ -40,6 +42,26 @@ public class Utility {
 
 	public static boolean isNumeric(String string) {
 		return string != null && string.matches("[-+]?\\d*\\.?\\d+");
+	}
+
+	public static void printQueryToFile(String tableName, StringBuilder query) {
+		query.setLength(query.length() - 3);
+		query.append(";");
+		printTextToFile("dump/SQL/" + tableName + ".sql", query.toString());
+	}
+
+	public static void printTextToFile(String destination, String text) {
+		File file = new File(destination);
+
+		if (!file.getParentFile().exists()) {
+			file.getParentFile().mkdirs();
+		}
+
+		try (PrintWriter printWriter = new PrintWriter(file)) {
+			printWriter.println(text);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void extractImage(WzProperty<?> property, String wz, String out) {

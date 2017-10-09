@@ -33,23 +33,23 @@ public class Equip extends Querifiable {
 
 	public int id;
 	public String name;
+	public int price;
+	public int reqJob;
+	public int reqLevel;
+	public int reqSTR;
+	public int reqDEX;
+	public int reqLUK;
+	public int reqINT;
+	public int incSTR;
+	public int incDEX;
+	public int incLUK;
+	public int incINT;
 	public int incMDD;
 	public int incPDD;
 	public int incMAD;
 	public int incPAD;
-	public int incDEX;
 	public int incACC;
-	public int incINT;
-	public int incLUK;
-	public int incSTR;
 	public int attackSpeed;
-	public int price;
-	public int reqDEX;
-	public int reqINT;
-	public int reqJob;
-	public int reqLevel;
-	public int reqLUK;
-	public int reqSTR;
 	public int tuc;
 
 	public Equip(int id) {
@@ -58,31 +58,31 @@ public class Equip extends Querifiable {
 
 	@Override
 	public String getTableName() {
-		return "character";
+		return "equipment";
 	}
 
 	@Override
 	public LinkedHashMap<String, Object> getQueryParameters(int relationshipKey) {
 		LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
-		parameters.put("id", id);
+		parameters.put("itemId", id);
 		parameters.put("name", name);
+		parameters.put("price", price);
+		parameters.put("reqLevel", reqLevel);
+		parameters.put("reqJob", reqJob);
+		parameters.put("reqSTR", reqSTR);
+		parameters.put("reqDEX", reqDEX);
+		parameters.put("reqLUK", reqLUK);
+		parameters.put("reqINT", reqINT);
+		parameters.put("incSTR", incSTR);
+		parameters.put("incDEX", incDEX);
+		parameters.put("incLUK", incLUK);
+		parameters.put("incINT", incINT);
 		parameters.put("incMDD", incMDD);
 		parameters.put("incPDD", incPDD);
 		parameters.put("incMAD", incMAD);
 		parameters.put("incPAD", incPAD);
-		parameters.put("incDEX", incDEX);
 		parameters.put("incACC", incACC);
-		parameters.put("incINT", incINT);
-		parameters.put("incLUK", incLUK);
-		parameters.put("incSTR", incSTR);
 		parameters.put("attackSpeed", attackSpeed);
-		parameters.put("price", price);
-		parameters.put("reqDEX", reqDEX);
-		parameters.put("reqINT", reqINT);
-		parameters.put("reqJob", reqJob);
-		parameters.put("reqLevel", reqLevel);
-		parameters.put("reqLUK", reqLUK);
-		parameters.put("reqSTR", reqSTR);
 		parameters.put("tuc", tuc);
 		return parameters;
 	}

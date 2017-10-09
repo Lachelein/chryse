@@ -49,8 +49,8 @@ public class MapNPC extends Querifiable {
 	@Override
 	public LinkedHashMap<String, Object> getQueryParameters(int relationshipKey) {
 		LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
-		parameters.put("map_id", relationshipKey);
-		parameters.put("npc_id", id);
+		parameters.put("mapId", relationshipKey);
+		parameters.put("npcId", id);
 		parameters.put("x", x);
 		parameters.put("y", y);
 		return parameters;

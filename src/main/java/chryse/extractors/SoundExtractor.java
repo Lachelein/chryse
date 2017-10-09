@@ -43,8 +43,6 @@ public class SoundExtractor extends Extractor {
 			return;
 		}
 
-		System.out.println(path + " " + path.length());
-
 		for (WzObject<?, ?> child : parent) {
 			dumpBgm(child);
 		}
@@ -53,8 +51,6 @@ public class SoundExtractor extends Extractor {
 
 	private void dumpBgm(WzObject<?, ?> sound) {
 		String name = sound.getName();
-
-		System.out.println(name);
 		extractSound((WzProperty<?>) sound, name);
 	}
 }

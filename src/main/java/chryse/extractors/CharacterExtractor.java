@@ -65,23 +65,23 @@ public class CharacterExtractor extends Extractor {
 		int id = getId(path);
 		Equip equip = Database.getEquip(id);
 
+		equip.price = WzDataTool.getInteger(info, "price", -1);
+		equip.reqLevel = WzDataTool.getInteger(info, "reqLevel", -1);
+		equip.reqJob = WzDataTool.getInteger(info, "reqJob", -1);
+		equip.reqSTR = WzDataTool.getInteger(info, "reqSTR", -1);
+		equip.reqDEX = WzDataTool.getInteger(info, "reqDEX", -1);
+		equip.reqLUK = WzDataTool.getInteger(info, "reqLUK", -1);
+		equip.reqINT = WzDataTool.getInteger(info, "reqINT", -1);
+		equip.incSTR = WzDataTool.getInteger(info, "incSTR", -1);
+		equip.incDEX = WzDataTool.getInteger(info, "incDEX", -1);
+		equip.incLUK = WzDataTool.getInteger(info, "incLUK", -1);
+		equip.incINT = WzDataTool.getInteger(info, "incINT", -1);
 		equip.incMDD = WzDataTool.getInteger(info, "incMDD", -1);
 		equip.incPDD = WzDataTool.getInteger(info, "incPDD", -1);
 		equip.incMAD = WzDataTool.getInteger(info, "incMAD", -1);
 		equip.incPAD = WzDataTool.getInteger(info, "incPAD", -1);
-		equip.incDEX = WzDataTool.getInteger(info, "incDEX", -1);
 		equip.incACC = WzDataTool.getInteger(info, "incACC", -1);
-		equip.incINT = WzDataTool.getInteger(info, "incINT", -1);
-		equip.incLUK = WzDataTool.getInteger(info, "incLUK", -1);
-		equip.incSTR = WzDataTool.getInteger(info, "incSTR", -1);
 		equip.attackSpeed = WzDataTool.getInteger(info, "attackSpeed", -1);
-		equip.price = WzDataTool.getInteger(info, "price", -1);
-		equip.reqDEX = WzDataTool.getInteger(info, "reqDEX", -1);
-		equip.reqINT = WzDataTool.getInteger(info, "reqINT", -1);
-		equip.reqJob = WzDataTool.getInteger(info, "reqJob", -1);
-		equip.reqLevel = WzDataTool.getInteger(info, "reqLevel", -1);
-		equip.reqLUK = WzDataTool.getInteger(info, "reqLUK", -1);
-		equip.reqSTR = WzDataTool.getInteger(info, "reqSTR", -1);
 		equip.tuc = WzDataTool.getInteger(info, "tuc", -1);
 
 		WzProperty<?> image = (WzProperty<?>) info.getChild("iconRaw");

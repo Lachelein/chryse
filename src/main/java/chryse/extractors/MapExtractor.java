@@ -74,9 +74,11 @@ public class MapExtractor extends Extractor {
 		int id = getId(path);
 		Map map = Database.getMap(id);
 
-		map.mapMark = WzDataTool.getString(info, "mapMark", "");
-		map.bgm = WzDataTool.getString(info, "bgm", "");
+		String bgm = WzDataTool.getString(info, "bgm", "");
+		map.bgm = bgm.length() > 0 ? bgm.split("/")[1] : bgm;
+
 		map.returnMap = WzDataTool.getInteger(info, "returnMap", -1);
+		map.mapMark = WzDataTool.getString(info, "mapMark", "");
 
 		addLife(parent, map);
 		addPortals(parent, map);

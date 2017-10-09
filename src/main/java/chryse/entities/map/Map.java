@@ -36,18 +36,18 @@ public class Map extends Querifiable {
 
 	@Override
 	public String getTableName() {
-		return "map";
+		return "maps";
 	}
 
 	@Override
 	public LinkedHashMap<String, Object> getQueryParameters(int relationshipKey) {
 		LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
-		parameters.put("id", id);
+		parameters.put("mapId", id);
 		parameters.put("mapName", mapName);
 		parameters.put("streetName", streetName);
 		parameters.put("mark", mapMark);
 		parameters.put("bgm", bgm);
-		parameters.put("return_map", returnMap);
+		parameters.put("returnMap", returnMap);
 		return parameters;
 	}
 

@@ -61,8 +61,6 @@ public class StringExtractor extends Extractor {
 			return;
 		}
 
-		System.out.println(path);
-
 		String[] nonEquips = {
 				"Cash",
 				"Consume",
@@ -122,7 +120,7 @@ public class StringExtractor extends Extractor {
 				WzObject<?, ?> bookName = skillObj.getChild("bookName");
 
 				if (bookName != null) {
-					System.out.println("Skipping: " + skillObj.getFullPath());
+					// books
 					continue;
 				}
 

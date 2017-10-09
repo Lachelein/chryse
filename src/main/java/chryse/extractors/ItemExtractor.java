@@ -95,15 +95,15 @@ public class ItemExtractor extends Extractor {
 	}
 
 	private void parseEtc(Item item, WzObject<?, ?> info) {
+		item.lv = WzDataTool.getInteger(info, "lv", -1);
 		item.price = WzDataTool.getInteger(info, "price", -1);
 		item.slotMax = WzDataTool.getInteger(info, "slotMax", -1);
-		item.lv = WzDataTool.getInteger(info, "lv", -1);
 	}
 
 	private void parseInstall(Item item, WzObject<?, ?> info) {
 		item.price = WzDataTool.getInteger(info, "price", -1);
-		item.slotMax = WzDataTool.getInteger(info, "slotMax", -1);
 		item.reqLevel = WzDataTool.getInteger(info, "reqLevel", -1);
+		item.slotMax = WzDataTool.getInteger(info, "slotMax", -1);
 	}
 
 	private void dumpIcon(WzObject<?, ?> item, String imagePath) {

@@ -58,7 +58,6 @@ public class App {
 				new SkillExtractor(target),
 				new SoundExtractor(target),
 				new StringExtractor(target)
-
 		};
 
 		// Quest.wz
@@ -67,8 +66,7 @@ public class App {
 			extractor.extract();
 		}
 
-		String query = Database.buildQuery();
-		System.out.println(query);
+		Database.buildQueries();
 
 		long seconds = (System.nanoTime() - startTime) / 1000000000;
 		System.out.println("All files extracted in " + seconds + " seconds.");

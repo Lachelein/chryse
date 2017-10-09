@@ -5,9 +5,13 @@ import java.util.LinkedHashMap;
 import chryse.entities.character.Equip;
 import chryse.entities.item.Item;
 import chryse.entities.map.Map;
+import chryse.entities.map.MapMonster;
+import chryse.entities.map.MapNPC;
+import chryse.entities.map.MapPortal;
 import chryse.entities.monster.Monster;
 import chryse.entities.npc.NPC;
 import chryse.entities.skill.Skill;
+import chryse.entities.skill.SkillLevel;
 
 public class Database {
 
@@ -18,52 +22,103 @@ public class Database {
 	private static LinkedHashMap<Integer, NPC> npcs = new LinkedHashMap<Integer, NPC>();
 	private static LinkedHashMap<Integer, Skill> skills = new LinkedHashMap<Integer, Skill>();
 
-	private static StringBuilder query = new StringBuilder();
+	public static void buildQueries() {
+		buildItemsQuery();
+		buildEquipsQuery();
+		buildMapsQuery();
+		buildMonstersQuery();
+		buildNPCsQuery();
+		buildSkillsQuery();
+	}
 
-	public static String buildQuery() {
+	private static void buildItemsQuery() {
+		StringBuilder query = new StringBuilder();
 
-		getEquips().forEach((id, equip) -> {
-			query.append(equip.querify(equip.id));
-		});
+		Item fakeItem = new Item(-1);
+		fakeItem.addTableStructure(query, -1);
 
-		getItems().forEach((id, item) -> {
-			query.append(item.querify(item.id));
-		});
+		items.forEach((id, item) -> item.addTableData(query, item.id));
+		Utility.printQueryToFile(fakeItem.getTableName(), query);
+	}
 
+	private static void buildEquipsQuery() {
+		StringBuilder query = new StringBuilder();
+		Equip fakeEquip = new Equip(-1);
+		fakeEquip.addTableStructure(query, -1);
+
+		equips.forEach((id, equip) -> equip.addTableData(query, equip.id));
+		Utility.printQueryToFile(fakeEquip.getTableName(), query);
+	}
+
+	private static void buildMapsQuery() {
+		StringBuilder mapStringBuilder = new StringBuilder();
 		StringBuilder npcsStringBuilder = new StringBuilder();
 		StringBuilder monstersStringBuilder = new StringBuilder();
 		StringBuilder portalsStringBuilder = new StringBuilder();
 
-		for (Map map : getMaps().values()) {
-			query.append(map.querify(map.id));
+		Map fakeMap = new Map(-1);
+		fakeMap.addTableStructure(mapStringBuilder, fakeMap.id);
 
-			map.npcs.forEach(npc -> npcsStringBuilder.append(npc.querify(map.id)));
-			map.monsters.forEach(monster -> monstersStringBuilder.append(monster.querify(map.id)));
-			map.portals.forEach(portal -> portalsStringBuilder.append(portal.querify(map.id)));
+		MapNPC fakeMapNPC = new MapNPC(-1, -1, -1);
+		fakeMapNPC.addTableStructure(npcsStringBuilder, -1);
+
+		MapMonster fakeMapMonster = new MapMonster(-1, -1, -1);
+		fakeMapMonster.addTableStructure(monstersStringBuilder, -1);
+
+		MapPortal fakeMapPortal = new MapPortal(-1);
+		fakeMapPortal.addTableStructure(portalsStringBuilder, -1);
+
+		for (Map map : maps.values()) {
+			map.addTableData(mapStringBuilder, map.id);
+			map.npcs.forEach(npc -> npc.addTableData(npcsStringBuilder, map.id));
+			map.monsters.forEach(monster -> monster.addTableData(monstersStringBuilder, map.id));
+			map.portals.forEach(portal -> portal.addTableData(portalsStringBuilder, map.id));
 		}
 
-		query.append(npcsStringBuilder.toString());
-		query.append(monstersStringBuilder.toString());
-		query.append(portalsStringBuilder.toString());
+		Utility.printQueryToFile(fakeMap.getTableName(), mapStringBuilder);
+		Utility.printQueryToFile(fakeMapNPC.getTableName(), npcsStringBuilder);
+		Utility.printQueryToFile(fakeMapMonster.getTableName(), monstersStringBuilder);
+		Utility.printQueryToFile(fakeMapPortal.getTableName(), portalsStringBuilder);
+	}
 
-		getMonsters().forEach((id, monster) -> {
-			query.append(monster.querify(monster.id));
-		});
+	private static void buildMonstersQuery() {
+		StringBuilder query = new StringBuilder();
 
-		getNPCs().forEach((id, npc) -> {
-			query.append(npc.querify(npc.id));
-		});
+		Monster fakeMonster = new Monster(-1);
+		fakeMonster.addTableStructure(query, -1);
+
+		monsters.forEach((id, monster) -> monster.addTableData(query, monster.id));
+		Utility.printQueryToFile(fakeMonster.getTableName(), query);
+	}
+
+	private static void buildNPCsQuery() {
+		StringBuilder query = new StringBuilder();
+
+		NPC fakeNPC = new NPC(-1);
+		fakeNPC.addTableStructure(query, -1);
+
+		npcs.forEach((id, npc) -> npc.addTableData(query, npc.id));
+		Utility.printQueryToFile(fakeNPC.getTableName(), query);
+	}
+
+	private static void buildSkillsQuery() {
+		StringBuilder query = new StringBuilder();
+
+		Skill fakeSkill = new Skill(-1);
+		fakeSkill.addTableStructure(query, -1);
 
 		StringBuilder skillLevelsStringBuilder = new StringBuilder();
-		for (Skill skill : getSkills().values()) {
-			query.append(skill.querify(skill.id));
+		SkillLevel fakeSkillLevel = new SkillLevel();
+		fakeSkillLevel.addTableStructure(skillLevelsStringBuilder, -1);
 
-			skill.levels.forEach(level -> skillLevelsStringBuilder.append(level.querify(skill.id)));
+		for (Skill skill : skills.values()) {
+			skill.addTableData(query, skill.id);
+			skill.levels.forEach(level -> level.addTableData(skillLevelsStringBuilder, skill.id));
 		}
 
-		query.append(skillLevelsStringBuilder.toString());
+		Utility.printQueryToFile(fakeSkill.getTableName(), query);
+		Utility.printQueryToFile(fakeSkillLevel.getTableName(), skillLevelsStringBuilder);
 
-		return query.toString();
 	}
 
 	public static LinkedHashMap<Integer, Item> getItems() {

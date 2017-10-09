@@ -31,9 +31,9 @@ import chryse.Querifiable;
 
 public class MapPortal extends Querifiable {
 
+	public int destination;
 	public int x;
 	public int y;
-	public int destination;
 
 	public MapPortal(int destination) {
 		this.destination = destination;
@@ -47,7 +47,7 @@ public class MapPortal extends Querifiable {
 	@Override
 	public LinkedHashMap<String, Object> getQueryParameters(int relationshipKey) {
 		LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
-		parameters.put("map_id", relationshipKey);
+		parameters.put("mapId", relationshipKey);
 		parameters.put("destination", destination);
 		parameters.put("x", x);
 		parameters.put("y", y);

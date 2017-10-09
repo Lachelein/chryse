@@ -34,13 +34,13 @@ public class Item extends Querifiable {
 	public int id;
 	public String name;
 	public String desc;
+	public int lv;
+	public int reqLevel;
 	public int price;
 	public int hungry;
 	public int life;
 	public int slotMax;
 	public int time;
-	public int lv;
-	public int reqLevel;
 
 	public Item(int id) {
 		this.id = id;
@@ -54,16 +54,16 @@ public class Item extends Querifiable {
 	@Override
 	public LinkedHashMap<String, Object> getQueryParameters(int relationshipKey) {
 		LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
-		parameters.put("id", id);
+		parameters.put("itemId", id);
 		parameters.put("name", name);
-		parameters.put("desc", desc);
-		parameters.put("price", price);
-		parameters.put("hungry", hungry);
-		parameters.put("return_map", life);
-		parameters.put("slotMax", slotMax);
-		parameters.put("time", time);
+		parameters.put("description", desc);
 		parameters.put("lv", lv);
 		parameters.put("reqLevel", reqLevel);
+		parameters.put("price", price);
+		parameters.put("hungry", hungry);
+		parameters.put("life", life);
+		parameters.put("slotMax", slotMax);
+		parameters.put("time", time);
 		return parameters;
 	}
 }

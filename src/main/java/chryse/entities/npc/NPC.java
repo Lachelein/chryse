@@ -22,7 +22,7 @@ public class NPC extends Querifiable {
 	@Override
 	public LinkedHashMap<String, Object> getQueryParameters(int relationshipKey) {
 		LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
-		parameters.put("id", id);
+		parameters.put("npcId", id);
 		parameters.put("name", name);
 		parameters.put("func", func);
 		return parameters;

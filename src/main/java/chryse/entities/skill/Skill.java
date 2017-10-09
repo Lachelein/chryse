@@ -29,9 +29,9 @@ public class Skill extends Querifiable {
 	@Override
 	public LinkedHashMap<String, Object> getQueryParameters(int relationshipKey) {
 		LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
-		parameters.put("id", id);
+		parameters.put("skillId", id);
 		parameters.put("name", name);
-		parameters.put("desc", desc);
+		parameters.put("description", desc);
 		return parameters;
 	}
 }

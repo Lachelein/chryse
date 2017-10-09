@@ -33,22 +33,21 @@ public class Monster extends Querifiable {
 
 	public int id;
 	public String name;
-	public int acc;
-	public int boss;
-	public int bodyAttack;
-	public int eva;
 	public int exp;
 	public int level;
-	public int MADamage;
 	public int maxHP;
 	public int maxMP;
+	public int eva;
+	public int acc;
+	public int bodyAttack;
+	public int MADamage;
 	public int MDDamage;
-	public int mobType;
 	public int PADamage;
 	public int PDDamage;
 	public int pushed;
 	public int speed;
 	public int undead;
+	public int boss;
 
 	public Monster(int id) {
 		this.id = id;
@@ -62,24 +61,23 @@ public class Monster extends Querifiable {
 	@Override
 	public LinkedHashMap<String, Object> getQueryParameters(int relationshipKey) {
 		LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
-		parameters.put("id", id);
+		parameters.put("monsterId", id);
 		parameters.put("name", name);
-		parameters.put("acc", acc);
-		parameters.put("boss", boss);
-		parameters.put("bodyAttack", bodyAttack);
-		parameters.put("eva", eva);
 		parameters.put("exp", exp);
 		parameters.put("level", level);
-		parameters.put("MADamage", MADamage);
 		parameters.put("maxHP", maxHP);
 		parameters.put("maxMP", maxMP);
+		parameters.put("eva", eva);
+		parameters.put("acc", acc);
+		parameters.put("bodyAttack", bodyAttack);
+		parameters.put("MADamage", MADamage);
 		parameters.put("MDDamage", MDDamage);
-		parameters.put("mobType", mobType);
 		parameters.put("PADamage", PADamage);
 		parameters.put("PDDamage", PDDamage);
 		parameters.put("pushed", pushed);
 		parameters.put("speed", speed);
 		parameters.put("undead", undead);
+		parameters.put("boss", boss);
 		return parameters;
 	}
 

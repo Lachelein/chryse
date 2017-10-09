@@ -35,26 +35,42 @@ public abstract class Querifiable {
 
 	public abstract String getTableName();
 
-	public String querify(int relationshipKey) {
+	public void addTableStructure(StringBuilder query, int relationshipKey) {
 		HashMap<String, Object> parameters = getQueryParameters(relationshipKey);
 
-		StringBuilder query = new StringBuilder("INSERT INTO " + getTableName() + " (");
+		query.append("INSERT INTO " + getTableName() + " (");
 		for (Map.Entry<String, Object> entry : parameters.entrySet()) {
 			query.append(entry.getKey() + ", ");
 		}
 		query.setLength(query.length() - 2);
-		query.append(") VALUES (");
+		query.append(") VALUES\r\n");
+	}
+
+	public void addTableData(StringBuilder query, int relationshipKey) {
+		HashMap<String, Object> parameters = getQueryParameters(relationshipKey);
+
+		query.append("(");
 
 		for (Map.Entry<String, Object> entry : parameters.entrySet()) {
-			if (entry == null || entry.getValue() == null) {
-				query.append(", ");
+			if (entry.getValue() == null) {
+				query.append("NULL, ");
 				continue;
 			}
-			query.append(entry.getValue().toString() + ", ");
+			if (entry.getValue() instanceof Integer) {
+				query.append(entry.getValue().toString() + ", ");
+			} else if (entry.getValue() instanceof String) {
+				String string = (String) entry.getValue();
+				if (string.contains("'") && string.contains("\"")) {
+					string = string.replace("'", "''");
+					query.append("'" + string + "', ");
+				} else if (string.contains("'")) {
+					query.append("\"" + string + "\", ");
+				} else {
+					query.append("'" + string + "', ");
+				}
+			}
 		}
 		query.setLength(query.length() - 2);
-		query.append(");\r\n");
-
-		return query.toString();
+		query.append("),\r\n");
 	}
 }
